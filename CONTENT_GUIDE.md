@@ -50,6 +50,7 @@ No sensational or misleading titles, no distressing content, no fake people or t
       "highlight": "label to color gold (optional)", "source": "short source"}},
     {"title_card": "short big statement", "kicker": "small label", "narration": "..."}
   ],
+  "fallback_images": ["commons:<Company> store interior", "commons:<Company> headquarters", "... 6–10 queries"],
   "sources": ["full source names"]
 }
 ```
@@ -78,6 +79,9 @@ No sensational or misleading titles, no distressing content, no fake people or t
   topic (e.g. "airplane cabin passengers", "supermarket checkout cashier"). Never generic finance filler
   ("money counting", "stock market screen", "trading chart") — those return crypto/bitcoin footage.
   Crypto, bitcoin and trading imagery are blocked unless the video is about them.
+- `fallback_images` (required): 6–10 `commons:` queries for real photos of the company/industry. Stock
+  clips are only used when their tags match at least two words of the query; whatever is still missing
+  is filled from these real photos, so the screen never shows unrelated filler.
 - Prefer real photos of the company via `images` with `commons:` (stores, HQ, products, food) — they
   make the video feel specific instead of stock.
 - Use `title_card` max 2× per video (hook statement + one key insight). Chapters get an automatic

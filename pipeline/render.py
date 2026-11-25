@@ -75,11 +75,18 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
     path.write_text(head + "\n".join(lines) + "\n", encoding="utf-8")
 
 
+FALLBACK_IMAGES = []
+
+
 def _shots(sec, n, work, used, credits, slug, i):
-    """Footage pool for a section: stock video + photos, interleaved."""
+    """Footage pool for a section: on-topic stock video + photos, interleaved.
+    If strict stock matching finds too little, fill with real topic photos (Commons) instead of filler."""
     vids = visuals.fetch_broll(sec.get("visuals", []), ROOT / "cache", used, n)
     imgs = visuals.fetch_photos(sec.get("images", []), ROOT / "cache", used,
                                 max(1, n // 2) if sec.get("images") else 0, credits)
+    short = n - len(vids) - len(imgs)
+    if short > 0 and FALLBACK_IMAGES:
+        imgs += visuals.fetch_photos(FALLBACK_IMAGES, ROOT / "cache", used, short, credits)
     pool = []
     for k in range(max(len(vids), len(imgs))):
         if k < len(imgs):
@@ -231,6 +238,7 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
 
     chapter_no = 0
     thumb_pool = []
+    FALLBACK_IMAGES[:] = spec.get("fallback_images", [])
     for i, sec in enumerate(spec["sections"]):
         print(f"[{slug}] section {i + 1}/{len(spec['sections'])}")
         mp3 = work / f"s{i:02d}.mp3"

@@ -50,11 +50,11 @@ def relevance(query, meta_text):
 
 
 def _rank(query, cands):
-    """Best tag matches first; blocked items removed; zero-overlap items only if nothing matches."""
+    """Strict: an asset must share >= 2 meaningful words with the query (1 if the query only has 1)."""
+    keys = _words(query) - {w.rstrip("s") for w in STOP}
+    need = 1 if len(keys) <= 1 else 2
     scored = [(relevance(query, c[-1]), c) for c in cands]
-    good = sorted([x for x in scored if x[0] >= 1], key=lambda x: -x[0])
-    if not good:
-        good = [x for x in scored if x[0] == 0][:2]
+    good = sorted([x for x in scored if x[0] >= need], key=lambda x: -x[0])
     return [c[:-1] for _, c in good]
 
 
@@ -367,6 +367,8 @@ def fetch_photos(queries, cache: Path, used: set, need: int, credits: list):
             print(f"  photo search failed '{q}': {e}")
             continue
         for cid, url, credit in cands:
+            if len(out) >= need:
+                break
             if cid in used:
                 continue
             dest = cache / f"{cid}.jpg"
@@ -382,7 +384,8 @@ def fetch_photos(queries, cache: Path, used: set, need: int, credits: list):
             out.append(dest)
             if credit and credit not in credits:
                 credits.append(credit)
-            break
+            if len(queries) > 1 and len(out) % 2 == 0:
+                break  # spread over queries when there are several
     return out
 
 
