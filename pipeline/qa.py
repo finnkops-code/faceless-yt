@@ -15,6 +15,7 @@ NEGATIVES = ["a dog", "a cat", "a wild animal", "a cartoon or drawing", "a 3D re
              "bitcoin or cryptocurrency coins", "a stock market trading chart", "a lake, river or pond",
              "empty store shelves", "a blank screen with only text", "a close-up portrait of a person's face",
              "a forest or mountains landscape", "food being cooked in a kitchen"]
+HARD = {"a dog", "a cat", "empty store shelves", "a lake, river or pond", "bitcoin or cryptocurrency coins"}
 LOG: list = []
 _state = {}
 
@@ -73,8 +74,10 @@ def ok(path, query: str) -> bool:
     s = _sims(path, [f"a photo of {q}"] + negs)
     if s is None:
         return True
-    pos, worst = s[0], max(range(1, len(s)), key=lambda i: s[i])
-    good = pos >= s[worst] and pos >= 0.17
+    # hard negatives (things that must never appear by accident) get a 0.02 head start
+    adj = [s[i] + (0.02 if negs[i - 1] in HARD else 0.0) for i in range(1, len(s))]
+    pos, worst = s[0], 1 + max(range(len(adj)), key=lambda i: adj[i])
+    good = pos >= adj[worst - 1] - 0.005 and pos >= 0.15
     if not good:
         LOG.append(f"REJECT {Path(path).name} for '{q}': looks like '{negs[worst - 1]}' "
                    f"({s[worst]:.3f} vs {pos:.3f})")
