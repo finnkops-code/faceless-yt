@@ -34,7 +34,17 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - run: sudo apt-get update -q && sudo apt-get install -y -q ffmpeg
+      - name: Cache pip + CLIP model
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.cache/huggingface
+          key: pip-clip-v1
       - run: pip install -q -r requirements.txt
+      - name: Install CLIP for visual QA (CPU)
+        continue-on-error: true
+        run: pip install -q torch --index-url https://download.pytorch.org/whl/cpu && pip install -q open_clip_torch
       - name: Cache voice model
         uses: actions/cache@v4
         with:
@@ -65,7 +75,7 @@ jobs:
           for d in output/*/; do
             slug=$(basename "$d")
             extra=()
-            for f in video.mp4 thumbnail.jpg thumbnail_b.jpg thumbnail_c.jpg photos.jpg metadata.json captions.srt; do [ -f "$d/$f" ] && extra+=("$d/$f"); done
+            for f in video.mp4 thumbnail.jpg thumbnail_b.jpg thumbnail_c.jpg photos.jpg qa_sheet.jpg qa_log.txt metadata.json captions.srt; do [ -f "$d/$f" ] && extra+=("$d/$f"); done
             for s in "$d"short_*/; do
               [ -f "$s/video.mp4" ] || continue
               n=$(basename "$s")

@@ -12,6 +12,8 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
+from . import qa
+
 W, H, FPS = 1920, 1080, 30
 UA = {"User-Agent": "faceless-yt-pipeline/1.0"}
 
@@ -138,6 +140,8 @@ def fetch_broll(queries, cache: Path, used: set, need: int):
                     print(f"  download failed {cid}: {e}")
                     continue
             used.add(cid)
+            if not qa.ok(dest, q):
+                continue
             clips.append(dest)
             break  # one per query per pass → variety
         if len(clips) >= need:
@@ -159,7 +163,8 @@ def fetch_broll(queries, cache: Path, used: set, need: int):
                     if not dest.exists():
                         _download(url, dest)
                     used.add(cid)
-                    clips.append(dest)
+                    if qa.ok(dest, q):
+                        clips.append(dest)
                 except Exception:
                     continue
     return clips
@@ -395,6 +400,8 @@ def fetch_photos(queries, cache: Path, used: set, need: int, credits: list):
                 print(f"  photo download failed {cid}: {e}")
                 continue
             used.add(cid)
+            if not qa.ok(dest, term):
+                continue
             out.append(dest)
             if credit and credit not in credits:
                 credits.append(credit)

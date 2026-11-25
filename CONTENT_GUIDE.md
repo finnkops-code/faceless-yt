@@ -81,7 +81,7 @@ No sensational or misleading titles, no distressing content, no fake people or t
   "description": "2–3 sentence summary with the main keywords",
   "tags": ["8–15 tags"],
   "category_id": "27",
-  "thumbnail": {"text": "3–6 WORDS", "highlight": "WORDS TO COLOR YELLOW",
+  "thumbnail": {"text": "3–6 WORDS", "highlight": "WORDS TO COLOR YELLOW", "photo_query": "e.g. Costco warehouse store",
     "variants": [{"style": "number", "number": "$5.9 BILLION", "label": "3–6 words of context"},
                  {"style": "band", "text": "a different angle, 4–7 words", "highlight": "WORD"}]},
   "sections": [
@@ -158,6 +158,14 @@ No sensational or misleading titles, no distressing content, no fake people or t
 ## Subtitles
 Every long video and Short gets a clean English SRT (2 lines, ≤ 42 chars) uploaded as a caption
 track — long-form has no burned-in captions, Shorts do.
+
+## Automatic visual QA
+Every downloaded stock clip/photo is checked with an open-source CLIP model: if it looks more like an
+off-topic concept (dog, lake, cartoon, crypto chart, empty shelves, landscape...) than like its query,
+it is rejected and the next candidate is used. Thumbnail photos are ranked by how well they show the
+subject (`thumbnail.photo_query`, e.g. "Costco warehouse store", defaults to the title). Each release
+contains `qa_sheet.jpg` (a frame every 20 s) and `qa_log.txt` (what was rejected) for review.
+Still write precise, subject-first queries: QA catches mistakes, it doesn't fix vague queries.
 
 ## End screen + pinned comment (every long video)
 - End screen (last 20 s): template "1 video, 1 subscribe", video = "Best for viewer". The narration's

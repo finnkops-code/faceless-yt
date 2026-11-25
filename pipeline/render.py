@@ -278,6 +278,8 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
     FALLBACK_IMAGES[:] = spec.get("fallback_images", [])
     if spec.get("thumbs_only"):              # new A/B/C thumbnails for an already-published video
         photos = visuals.fetch_photos(spec.get("fallback_images", []), ROOT / "cache", set(), 10, [])
+        from . import qa
+        photos = qa.rank(photos, spec.get("thumbnail", {}).get("photo_query") or spec["title"])
         from .thumbnail import contact_sheet
         contact_sheet(photos, out / "photos.jpg")
         make_variants(spec.get("thumbnail", {}), photos, out, FONTS)
@@ -291,6 +293,8 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
                 build_short(sh, k, spec, out, [mc] if mc else [], track)
             except Exception as e:
                 print(f"[{slug}] short {k + 1} failed: {e}")
+        from . import qa
+        (out / "qa_log.txt").write_text("\n".join(qa.LOG) or "no rejections")
         return out
     for i, sec in enumerate(spec["sections"]):
         print(f"[{slug}] section {i + 1}/{len(spec['sections'])}")
@@ -359,6 +363,9 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
 
     # --- thumbnail + metadata
     photos = [p for k, p in thumb_pool if k == "img"] + [p for k, p in thumb_pool if k == "vid"] or [clips[0]]
+    from . import qa
+    subject = spec.get("thumbnail", {}).get("photo_query") or spec.get("subject") or spec["title"]
+    photos = qa.rank(photos[:24], subject)
     all_callouts = [c for s in spec["sections"] for c in s.get("callouts", [])]
     big = sorted(all_callouts, key=lambda c: (("billion" in c.get("text", "")) + ("$" in c.get("text", ""))),
                  reverse=True)[:1]
@@ -383,6 +390,11 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
                                    "comment, and the most-requested companies get their own full breakdown."),
     }
     (out / "metadata.json").write_text(json.dumps(meta, indent=2))
+
+    # --- QA artefacts: contact sheet of the render + log of rejected stock
+    from . import qa
+    qa.sheet(final, out / "qa_sheet.jpg")
+    (out / "qa_log.txt").write_text("\n".join(qa.LOG) or "no rejections")
 
     # --- vertical Shorts (max 3); a failing short never blocks the long video
     from .shorts import build_short
