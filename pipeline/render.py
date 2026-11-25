@@ -277,7 +277,9 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
     thumb_pool = []
     FALLBACK_IMAGES[:] = spec.get("fallback_images", [])
     if spec.get("thumbs_only"):              # new A/B/C thumbnails for an already-published video
-        photos = visuals.fetch_photos(spec.get("fallback_images", []), ROOT / "cache", set(), 6, [])
+        photos = visuals.fetch_photos(spec.get("fallback_images", []), ROOT / "cache", set(), 10, [])
+        from .thumbnail import contact_sheet
+        contact_sheet(photos, out / "photos.jpg")
         make_variants(spec.get("thumbnail", {}), photos, out, FONTS)
         return out
     if spec.get("shorts_only"):              # Shorts for an already-published long video

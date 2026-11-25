@@ -168,14 +168,36 @@ def make_variants(spec: dict, photos: list, out_dir: Path, fonts: Path, callouts
     Each variant uses a different photo where possible so the test also compares images."""
     photos = list(photos) or [None]
     pick = lambda k: photos[k % len(photos)]
-    a = make_thumbnail(spec, pick(0), out_dir / "thumbnail.jpg", fonts)
     vs = {v.get("style"): v for v in spec.get("variants", [])}
+    a = make_thumbnail(spec, pick(spec.get("photo", 0)), out_dir / "thumbnail.jpg", fonts)
     b = vs.get("number") or {}
     if not b.get("number") and callouts:
         b = {"number": callouts[0].get("text", ""), "label": callouts[0].get("label", "")}
     c = vs.get("band") or {"text": spec.get("text", ""), "highlight": spec.get("highlight", "")}
     out = [a]
     if b.get("number"):
-        out.append(thumb_number(b, pick(1), out_dir / "thumbnail_b.jpg", fonts))
-    out.append(thumb_band(c, pick(2), out_dir / "thumbnail_c.jpg", fonts))
+        out.append(thumb_number(b, pick(b.get("photo", 1)), out_dir / "thumbnail_b.jpg", fonts))
+    out.append(thumb_band(c, pick(c.get("photo", 2)), out_dir / "thumbnail_c.jpg", fonts))
+    return out
+
+
+def contact_sheet(photos, out: Path):
+    """Numbered overview of candidate photos, so a variant's "photo" index can be chosen."""
+    ims = []
+    for p in photos:
+        try:
+            ims.append(_cover(_load(p), 384, 216))
+        except Exception:
+            pass
+    if not ims:
+        return None
+    cols = 4
+    sheet = Image.new("RGB", (384 * cols, 216 * ((len(ims) + cols - 1) // cols)), PANEL)
+    d = ImageDraw.Draw(sheet)
+    for i, im in enumerate(ims):
+        x, y = 384 * (i % cols), 216 * (i // cols)
+        sheet.paste(im, (x, y))
+        d.rectangle([x, y, x + 44, y + 34], fill=GOLD)
+        d.text((x + 12, y + 6), str(i), fill=PANEL)
+    sheet.save(out, quality=88)
     return out
