@@ -17,6 +17,9 @@ DONE = ROOT / "content" / "published"
 def main():
     limit = int(os.environ.get("MAX_PER_RUN", "1"))
     mode = os.environ.get("UPLOAD_MODE", "release")  # release | api
+    if not (os.environ.get("PEXELS_API_KEY") or os.environ.get("PIXABAY_API_KEY")):
+        print("No stock footage key configured (PEXELS_API_KEY) - skipping render, queue untouched.")
+        return
     items = sorted(QUEUE.glob("*.json"))[:limit]
     results = []
     for p in items:
