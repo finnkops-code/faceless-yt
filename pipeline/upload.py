@@ -21,6 +21,13 @@ SCOPES = ["https://www.googleapis.com/auth/youtube.upload",
 CAPTION_SCOPE = "https://www.googleapis.com/auth/youtube.force-ssl"
 
 
+def creds():
+    return Credentials(None, refresh_token=os.environ["YT_REFRESH_TOKEN"],
+                       token_uri="https://oauth2.googleapis.com/token",
+                       client_id=os.environ["YT_CLIENT_ID"],
+                       client_secret=os.environ["YT_CLIENT_SECRET"])
+
+
 def client():
     creds = Credentials(None, refresh_token=os.environ["YT_REFRESH_TOKEN"],
                         token_uri="https://oauth2.googleapis.com/token",

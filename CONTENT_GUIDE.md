@@ -5,6 +5,41 @@ Working name: **Hidden Ledger**. Long-form (8–12 min) English explainers on **
 industries and everyday things really make money**. Audience: curious US/UK/CA/AU adults, 20–50.
 Promise: "The business behind the thing you use every day, explained with real numbers."
 
+## North star: viewers, watch time, subscribers (Finn's end goal — steer on this every run)
+Every decision (topic, title, thumbnail, structure, Shorts) is judged by one question:
+**will this get more people to click, keep watching, and subscribe?** Revenue follows from these three.
+Read `data/growth.md` (scoreboard) and `data/stats.json` before every script and act on it.
+
+**1. Viewers = impressions × click-through.** The topic and the title/thumbnail decide 80% of views.
+- Pick topics people already search for or are talking about this week (earnings, price hikes, layoffs,
+  launches, viral moments). A famous brand + a surprising mechanism beats an obscure company.
+- Title: ≤ 60 chars, one concrete number or paradox, curiosity gap that the video honestly pays off
+  ("Costco Barely Profits From Its Products. So How Does It Make $9 Billion?").
+  Write 3 title options in the script (`title_options`) and pick the strongest as `title`.
+- Thumbnail text 3–5 words, never a repeat of the title; one big number or contrast.
+
+**2. Watch time = retention.** Mid-roll ads and recommendations both depend on it.
+- First 30 seconds: state the paradox immediately, promise the payoff, no channel intro, no "in this video".
+- Open a loop every 60–90 s ("but that's not where the real money is…") and close it later.
+- Never let a section run long without a new number, chart, or turn. Cut anything that doesn't move
+  the story; 9–11 min of tight story beats 12 min with filler.
+- Put the single most surprising fact in the middle third, not the start, to carry viewers through.
+
+**3. Subscribers = a reason to come back.**
+- Make it a recognisable series ("How X really makes money") with a consistent promise and look.
+- One short, natural subscribe line right after the biggest reveal (not at the start):
+  e.g. "If you like seeing the business behind everyday things, that's what this channel does every week."
+- End with a question that invites comments + a tease of the next company (builds return visits).
+- Shorts are the subscriber funnel: each Short is the best standalone fact of the long video, and its
+  description + end card point to the full breakdown.
+
+**Feedback loop (every run, written into the script as `growth_notes`):**
+- Compare videos on views/day, average view %, and subs per 1k views (`data/growth.md`).
+- Note what the best performer did differently (topic type, title pattern, hook, length) and copy it;
+  note the worst and avoid it. With < 5 videos, follow the playbook above and vary ONE thing per video
+  (e.g. title framing or topic type) so results teach us something.
+- Shorts that outperform point to topics worth a full long-form video.
+
 ## Why this niche
 - Long-form Education & Science has the strongest verified median RPM in recent creator data and the
   highest share of views that show an ad. Business/finance advertisers bid on this audience.
@@ -21,8 +56,8 @@ Never publish anything that looks mass-produced. Every video MUST have:
 No sensational or misleading titles, no distressing content, no fake people or testimonials.
 
 ## Topic selection (every run)
-1. Read `data/stats.json` (if present): which videos got the best views per day since publish & likes.
-   Lean towards the patterns that work (company type, title framing), avoid what flops.
+1. Read `data/growth.md` + `data/stats.json`: rank by views/day, average view %, subs per 1k views.
+   Lean towards the patterns that win on those three, avoid what flops (see North star above).
 2. Check `content/published/` + `content/queue/` so you never repeat a company.
 3. Prefer topics with search demand + a fresh news hook (recent earnings, price hike, launch).
    Mix: 60% famous consumer brands (Costco, Netflix, Spotify, IKEA, Ryanair, Starbucks, Nintendo…),
@@ -33,7 +68,9 @@ No sensational or misleading titles, no distressing content, no fake people or t
 ```json
 {
   "slug": "002-how-ryanair-makes-money",
-  "title": "≤ 70 chars, curiosity + specific number, no clickbait lies",
+  "title": "≤ 60 chars, curiosity + specific number, no clickbait lies",
+  "title_options": ["3 alternatives considered"],
+  "growth_notes": "what the stats told you and which ONE thing this video tests",
   "description": "2–3 sentence summary with the main keywords",
   "tags": ["8–15 tags"],
   "category_id": "27",
