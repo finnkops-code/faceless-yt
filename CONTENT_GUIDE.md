@@ -1,0 +1,59 @@
+# Content guide (read before writing any script)
+
+## Channel
+Working name: **Hidden Ledger**. Long-form (8–12 min) English explainers on **how familiar companies,
+industries and everyday things really make money**. Audience: curious US/UK/CA/AU adults, 20–50.
+Promise: "The business behind the thing you use every day, explained with real numbers."
+
+## Why this niche
+- Long-form Education & Science has the strongest verified median RPM in recent creator data and the
+  highest share of views that show an ad. Business/finance advertisers bid on this audience.
+- It's evergreen, works with stock footage + data charts, and isn't personal financial advice
+  (no "buy this stock", no "AI expert" persona). That keeps it clear of YouTube's YMYL / AI-persona issues.
+
+## Monetization rules (YouTube "inauthentic content" policy, July 2026)
+Never publish anything that looks mass-produced. Every video MUST have:
+1. One central question or paradox in the first 15 seconds (the hook).
+2. Real, current, sourced numbers (company filings, earnings releases, government data). Minimum 3 charts.
+3. An actual argument: a model/flywheel/mechanism the viewer didn't know, plus a "can it last?" counterpoint.
+4. A unique structure: do NOT reuse the same section order or sentence templates across videos.
+5. Sources listed in `sources`. If a number can't be verified, leave it out.
+No sensational or misleading titles, no distressing content, no fake people or testimonials.
+
+## Topic selection (every run)
+1. Read `data/stats.json` (if present): which videos got the best views per day since publish & likes.
+   Lean towards the patterns that work (company type, title framing), avoid what flops.
+2. Check `content/published/` + `content/queue/` so you never repeat a company.
+3. Prefer topics with search demand + a fresh news hook (recent earnings, price hike, launch).
+   Mix: 60% famous consumer brands (Costco, Netflix, Spotify, IKEA, Ryanair, Starbucks, Nintendo…),
+   25% "hidden industries" (why printer ink is expensive, how airlines make money from credit cards),
+   15% big-picture explainers (how a stadium gets paid for, why gift cards are pure profit).
+
+## Script format — `content/queue/NNN-slug.json`
+```json
+{
+  "slug": "002-how-ryanair-makes-money",
+  "title": "≤ 70 chars, curiosity + specific number, no clickbait lies",
+  "description": "2–3 sentence summary with the main keywords",
+  "tags": ["8–15 tags"],
+  "category_id": "27",
+  "thumbnail": {"text": "3–6 WORDS", "highlight": "WORDS TO COLOR YELLOW"},
+  "sections": [
+    {"chapter": "optional chapter name", "narration": "...", "visuals": ["pexels search query", "..."]},
+    {"narration": "...", "chart": {"type": "bar|hbar|line", "title": "...", "subtitle": "units",
+      "labels": ["..."], "values": [1.0], "unit": "$|%|M|...", "decimals": 1,
+      "highlight": "label to color yellow (optional)", "source": "short source"}},
+    {"title_card": "short big statement", "kicker": "small label", "narration": "..."}
+  ],
+  "sources": ["full source names"]
+}
+```
+- Total narration **1,350–1,700 words** (≈ 8.5–11 min). Videos under 8:00 get no mid-roll ads.
+- 14–20 sections, 60–130 words each. First section has `chapter` (chapters need start at 0:00).
+- Write numbers as words in narration where TTS might misread ("twenty twenty-six", "nine point two billion").
+- `visuals`: 2–3 concrete, filmable stock-footage queries per section (objects/places/actions, no brand
+  logos, no specific people). Pexels has no brand footage — "airplane cabin", not "Ryanair plane".
+- End with a CTA asking which company to break down next (comments = topic ideas + engagement).
+
+## Cadence
+2 videos per week (Mon + Thu publish). Quality over volume.

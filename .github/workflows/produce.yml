@@ -1,0 +1,71 @@
+name: produce
+on:
+  push:
+    branches: [main]
+    paths: ["content/queue/**"]
+  schedule:
+    - cron: "17 6 * * *"     # daily safety net + stats snapshot
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: produce
+  cancel-in-progress: false
+
+jobs:
+  produce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+      YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+      YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+      YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+      UPLOAD_MODE: ${{ vars.UPLOAD_MODE || 'release' }}
+      MAX_PER_RUN: ${{ vars.MAX_PER_RUN || '1' }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: sudo apt-get update -q && sudo apt-get install -y -q ffmpeg
+      - run: pip install -q -r requirements.txt
+
+      - name: Render (and upload when UPLOAD_MODE=api)
+        id: render
+        run: |
+          if ls content/queue/*.json >/dev/null 2>&1; then
+            python -m pipeline.run_queue
+            echo "rendered=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "queue empty"
+          fi
+
+      - name: Publish release assets (browser-upload mode)
+        if: steps.render.outputs.rendered == 'true' && env.UPLOAD_MODE != 'api'
+        run: |
+          for d in output/*/; do
+            slug=$(basename "$d")
+            [ -f "$d/video.mp4" ] || continue
+            gh release create "video-$slug" "$d/video.mp4" "$d/thumbnail.jpg" \
+              "$d/metadata.json" "$d/captions.srt" \
+              --title "$slug" --notes "Ready for upload" || true
+          done
+
+      - name: Stats snapshot
+        if: env.YT_REFRESH_TOKEN != ''
+        continue-on-error: true
+        run: python -m pipeline.stats
+
+      - name: Commit queue/state changes
+        run: |
+          git config user.name "faceless-bot"
+          git config user.email "bot@users.noreply.github.com"
+          mkdir -p data && cp output/run.json "data/last_run.json" 2>/dev/null || true
+          for d in output/*/; do [ -f "$d/youtube.json" ] && cp "$d/youtube.json" "data/$(basename $d).youtube.json"; done 2>/dev/null || true
+          git add content data
+          git diff --cached --quiet || git commit -m "pipeline: processed queue [skip ci]"
+          git push
