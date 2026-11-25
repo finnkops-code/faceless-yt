@@ -1,7 +1,7 @@
 # Content guide (read before writing any script)
 
 ## Channel
-Working name: **Hidden Ledger**. Long-form (8–12 min) English explainers on **how familiar companies,
+Channel: **Price Tag Physics** (@PriceTagPhysics, renamed from Hidden Ledger on 25-11-2026; tagline "The hidden forces behind every price tag"). Long-form (8–12 min) English explainers on **how familiar companies,
 industries and everyday things really make money**. Audience: curious US/UK/CA/AU adults, 20–50.
 Promise: "The business behind the thing you use every day, explained with real numbers."
 
@@ -132,7 +132,7 @@ No sensational or misleading titles, no distressing content, no fake people or t
 - Prefer real photos of the company via `images` with `commons:` (stores, HQ, products, food) — they
   make the video feel specific instead of stock.
 - Use `title_card` max 2× per video (hook statement + one key insight). Chapters get an automatic
-  numbered label; first section is the cold-open hook, then the Hidden Ledger ident plays automatically.
+  numbered label; first section is the cold-open hook, then the Price Tag Physics ident plays automatically.
 - No word-by-word burned captions in long-form (subtitles go up as a separate SRT track).
 
 ## Shorts (every video: 3, max 3)

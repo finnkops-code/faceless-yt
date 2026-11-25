@@ -5,7 +5,7 @@ Each short is its own mini-script in spec["shorts"] (max 3):
    "callouts": [{"at": "phrase", "text": "$5.9 billion", "label": "membership fees"}],
    "chart": {...optional, same schema as long-form...}, "tags": [...]}
 
-House style: footage fills the frame, HIDDEN LEDGER wordmark + headline at the top,
+House style: footage fills the frame, PRICE TAG PHYSICS wordmark + headline at the top,
 big burned-in captions (Shorts are mostly watched muted), numbers in gold,
 centred stat cards, and a closing card that points to the full video.
 """
@@ -60,8 +60,8 @@ def frame_png(title, out: Path):
     img.alpha_composite(shade)
     d = ImageDraw.Draw(img)
     wm = inter(30)
-    d.text((VW / 2, 120), "HIDDEN LEDGER", font=wm, fill=INK, anchor="mm")
-    tw = d.textlength("HIDDEN LEDGER", font=wm)
+    d.text((VW / 2, 120), brand.BRAND_WORD, font=wm, fill=INK, anchor="mm")
+    tw = d.textlength(brand.BRAND_WORD, font=wm)
     d.rectangle([VW / 2 - tw / 2, 146, VW / 2 + tw / 2, 151], fill=GOLD)
     f = anton(84)
     lines = _wrap(d, title.upper(), f, VW - 140)
@@ -124,7 +124,7 @@ def end_card(long_title, out: Path, work: Path):
             y += f.size + 14
         b = ease((t - 0.5) / 0.5)
         col2 = tuple(int(PANEL[i] + (MUTED[i] - PANEL[i]) * b) for i in range(3))
-        d.text((VW / 2, y + 60), "on the Hidden Ledger channel", font=inter(42), fill=col2, anchor="mm")
+        d.text((VW / 2, y + 60), f"on the {brand.BRAND} channel", font=inter(42), fill=col2, anchor="mm")
         rule = ease((t - 0.3) / 0.7) * 360
         d.rectangle([VW / 2 - rule / 2, y + 110, VW / 2 + rule / 2, y + 118], fill=GOLD)
         img.save(frames / f"e{k:03d}.png")

@@ -1,12 +1,14 @@
-"""Hidden Ledger house-style thumbnail.
+"""Price Tag Physics house-style thumbnail.
 
 Layout (1280x720): real photo of the subject on the right, near-black panel on the left that fades
-into the photo, 3–6 huge Anton words (highlight words in ledger gold), gold rule, HIDDEN LEDGER wordmark.
+into the photo, 3–6 huge Anton words (highlight words in ledger gold), gold rule, PRICE TAG PHYSICS wordmark.
 """
 import subprocess
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageEnhance, ImageFont
+
+from .brand import BRAND_WORD
 
 W, H = 1280, 720
 GOLD = (245, 183, 0)
@@ -57,8 +59,8 @@ def make_thumbnail(spec: dict, clip, out: Path, fonts: Path):
     canvas = Image.composite(Image.new("RGB", (W, H), PANEL), canvas, grad.resize((W, H)))
     d = ImageDraw.Draw(canvas)
     wm = ImageFont.truetype(str(fonts / "Inter-Bold.otf"), 22)
-    d.text((56, 46), "HIDDEN LEDGER", font=wm, fill=GOLD)
-    d.rectangle([56, 76, 56 + d.textlength("HIDDEN LEDGER", font=wm), 79], fill=GOLD)
+    d.text((56, 46), BRAND_WORD, font=wm, fill=GOLD)
+    d.rectangle([56, 76, 56 + d.textlength(BRAND_WORD, font=wm), 79], fill=GOLD)
     size, maxw = 120, W - pw + 40
     while True:
         f = ImageFont.truetype(str(fonts / "Anton-Regular.ttf"), size)

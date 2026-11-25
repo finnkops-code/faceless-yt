@@ -361,7 +361,7 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
     if spec.get("sources"):
         desc += "\n\nSources\n" + "\n".join(f"- {s}" for s in spec["sources"])
     desc += compact_credits(credits)
-    desc += "\n\nResearch, script and data visuals by Hidden Ledger. Narration uses a synthetic voice."
+    desc += "\n\nResearch, script and data visuals by Price Tag Physics. Narration uses a synthetic voice."
     meta = {
         "title": spec["title"][:100],
         "description": desc[:4900],

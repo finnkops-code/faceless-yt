@@ -3,7 +3,7 @@
 _Last updated: 25 November 2026_
 
 Hidden Ledger Uploader is a private, single-user tool operated by Finn Kops for his own YouTube channel
-"Hidden Ledger". It is not offered to the public and has no other users.
+"Price Tag Physics" (formerly "Hidden Ledger"). It is not offered to the public and has no other users.
 
 ## What the tool accesses
 Through the YouTube Data API, with the channel owner's explicit OAuth consent, the tool:

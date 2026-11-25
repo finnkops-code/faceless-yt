@@ -1,9 +1,9 @@
-"""Hidden Ledger house style: animated charts, stat callouts, chapter labels and the intro ident.
+"""Price Tag Physics house style: animated charts, stat callouts, chapter labels and the intro ident.
 
 One design system everywhere:
   - colours: ink on near-black panels, one accent (ledger gold), one secondary (steel blue)
   - type: Anton for numbers/headlines, Inter for labels
-  - every graphic carries the small HIDDEN LEDGER wordmark + a thin gold rule
+  - every graphic carries the small PRICE TAG PHYSICS wordmark + a thin gold rule
 """
 import math
 import subprocess
@@ -13,6 +13,8 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 W, H, FPS = 1920, 1080, 30
 FONTS = Path(__file__).resolve().parent.parent / "assets" / "fonts"
+BRAND = "Price Tag Physics"
+BRAND_WORD = "PRICE TAG PHYSICS"
 GOLD = (245, 183, 0)
 STEEL = (63, 167, 214)
 INK = (242, 244, 247)
@@ -61,8 +63,8 @@ def fmt_value(v, spec):
 
 
 def wordmark(d, x, y, size=26):
-    d.text((x, y), "HIDDEN LEDGER", font=inter(size), fill=GOLD)
-    w = d.textlength("HIDDEN LEDGER", font=inter(size))
+    d.text((x, y), BRAND_WORD, font=inter(size), fill=GOLD)
+    w = d.textlength(BRAND_WORD, font=inter(size))
     d.rectangle([x, y + size + 8, x + w, y + size + 11], fill=GOLD)
 
 
@@ -189,7 +191,7 @@ def chapter_png(number, title, out: Path):
 
 
 # ---------------------------------------------------------------- ident
-def ident_clip(out: Path, seconds=2.6, tagline="The business behind the things you use"):
+def ident_clip(out: Path, seconds=2.6, tagline="The hidden forces behind every price tag"):
     tmp = out.parent / "ident_frames"
     tmp.mkdir(parents=True, exist_ok=True)
     n = int(seconds * FPS)
@@ -202,7 +204,7 @@ def ident_clip(out: Path, seconds=2.6, tagline="The business behind the things y
             y = 140 + k * 60
             d.line([(0, y), (W, y)], fill=(22, 27, 34), width=2)
         a = ease(t / 0.7)
-        word = "HIDDEN LEDGER"
+        word = BRAND_WORD
         ft = anton(170)
         tw = d.textlength(word, font=ft)
         x = (W - tw) / 2
