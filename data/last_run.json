@@ -1,7 +1,7 @@
 [
   {
-    "slug": "001x-costco-thumbs",
-    "dir": "output/001x-costco-thumbs",
+    "slug": "qa-test-hotdog",
+    "dir": "output/qa-test-hotdog",
     "mode": "release"
   }
 ]
