@@ -105,6 +105,7 @@ No sensational or misleading titles, no distressing content, no fake people or t
 - Hook in the first sentence, no intro, no greeting. End on the payoff line.
 - Same rules as long-form: every spoken number gets a callout or the chart, subject-first visual
   queries, `commons:` photos of the real company. 3–5 visual/image queries per Short.
+- Avoid ambiguous stock queries ("hot dog" returns dogs): for food/products of the company, use `commons:` images.
 - Rendered vertically (1080×1920) with big burned-in captions (Shorts are mostly watched muted).
 - They publish one per day after the long video and link to it.
 

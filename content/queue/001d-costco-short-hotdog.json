@@ -1,0 +1,51 @@
+{
+  "slug": "001d-costco-short-hotdog",
+  "shorts_only": true,
+  "title": "Costco Barely Profits From Its Products. So How Does It Make $9 Billion?",
+  "long_url": "https://youtu.be/RO0t7iF2Epg",
+  "tags": [
+    "costco",
+    "costco membership",
+    "business explained",
+    "how companies make money",
+    "kirkland"
+  ],
+  "category_id": "27",
+  "fallback_images": [
+    "commons:Costco warehouse interior",
+    "commons:Costco store aisle",
+    "commons:Costco Wholesale exterior",
+    "commons:Costco shoppers",
+    "commons:Kirkland Signature",
+    "commons:Costco food court",
+    "commons:Costco gas station",
+    "commons:Costco parking lot",
+    "commons:Costco checkout"
+  ],
+  "shorts": [
+    {
+      "title": "Why Costco's $1.50 hot dog never gets more expensive",
+      "headline": "The hot dog that hasn't changed price since the 80s",
+      "narration": "A hot dog and a soda at Costco still cost one dollar fifty, the same price as in the nineteen eighties. Inflation should have pushed it far higher. So why doesn't Costco raise it? Because the hot dog isn't the product. You are. Costco makes its money when you renew your membership, and in the US and Canada, about ninety two percent of members do, every single year. A cheap hot dog is a tiny cost to keep that habit alive.",
+      "visuals": [],
+      "images": [
+        "commons:Costco food court",
+        "commons:Costco hot dog",
+        "commons:Costco food court menu",
+        "commons:Costco warehouse interior"
+      ],
+      "callouts": [
+        {
+          "at": "one dollar fifty",
+          "text": "$1.50",
+          "label": "hot dog + soda since the 1980s"
+        },
+        {
+          "at": "ninety two percent",
+          "text": "92.3%",
+          "label": "renewal rate, US & Canada"
+        }
+      ]
+    }
+  ]
+}
