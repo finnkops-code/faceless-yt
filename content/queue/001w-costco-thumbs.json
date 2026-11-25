@@ -1,5 +1,5 @@
 {
-  "slug": "001v-costco-thumbs",
+  "slug": "001w-costco-thumbs",
   "thumbs_only": true,
   "title": "Costco Barely Profits From Its Products. So How Does It Make $9 Billion?",
   "fallback_images": [
@@ -20,13 +20,16 @@
       {
         "style": "number",
         "number": "$5.9 BILLION",
-        "label": "just for letting you shop"
+        "label": "just for letting you shop",
+        "photo": 1
       },
       {
         "style": "band",
         "text": "Costco's real product isn't groceries",
-        "highlight": "ISN'T"
+        "highlight": "ISN'T",
+        "photo": 7
       }
-    ]
+    ],
+    "photo": 0
   }
 }
