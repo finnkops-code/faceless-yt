@@ -44,6 +44,7 @@ def main():
     snap = {"taken": datetime.now(timezone.utc).isoformat(), "channel": ch["statistics"],
             "analytics_status": status, "videos": videos}
     _scoreboard(snap)
+    _comments(yt, ch)
     (ROOT / "data").mkdir(exist_ok=True)
     (ROOT / "data" / "stats.json").write_text(json.dumps(snap, indent=2))
     print(f"{len(videos)} videos, subs={ch['statistics'].get('subscriberCount')}")
@@ -73,6 +74,28 @@ def _analytics(videos):
     except Exception as e:
         print(f"analytics unavailable: {e}")
         return None
+
+
+def _comments(yt, ch):
+    """Latest viewer comments (topic requests!) -> data/comments.md for the producer."""
+    try:
+        cid = yt.channels().list(part="id", mine=True).execute()["items"][0]["id"]
+        r = yt.commentThreads().list(part="snippet", allThreadsRelatedToChannelId=cid, maxResults=100,
+                                     order="time", textFormat="plainText").execute()
+    except Exception as e:
+        print(f"comments unavailable: {e}")
+        return
+    rows = []
+    for t in r.get("items", []):
+        c = t["snippet"]["topLevelComment"]["snippet"]
+        if c.get("authorChannelId", {}).get("value") == cid:
+            continue  # skip our own (pinned) comments
+        rows.append(f"- ({c.get('likeCount', 0)} likes, {c['publishedAt'][:10]}) "
+                    f"{c['textDisplay'][:300].replace(chr(10), ' ')}")
+    (ROOT / "data" / "comments.md").write_text(
+        "# Viewer comments (latest 100, auto-generated)\n"
+        "Use these for topic requests and to answer recurring questions in future videos.\n\n"
+        + ("\n".join(rows) if rows else "_No viewer comments yet._") + "\n")
 
 
 def _scoreboard(snap):

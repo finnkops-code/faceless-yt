@@ -62,6 +62,7 @@ No sensational or misleading titles, no distressing content, no fake people or t
 
 ## Topic selection (every run)
 1. Read `data/growth.md` + `data/stats.json`: rank by views/day, average view %, subs per 1k views.
+   Read `data/comments.md`: companies viewers ask for get priority (we promise this in the pinned comment).
    Lean towards the patterns that win on those three, avoid what flops (see North star above).
 2. Check `content/published/` + `content/queue/` so you never repeat a company.
 3. Prefer topics with search demand + a fresh news hook (recent earnings, price hike, launch).
@@ -76,6 +77,7 @@ No sensational or misleading titles, no distressing content, no fake people or t
   "title": "≤ 60 chars, curiosity + specific number, no clickbait lies",
   "title_options": ["3 alternatives considered"],
   "growth_notes": "what the stats told you and which ONE thing this video tests",
+  "pinned_comment": "question that invites comments, tied to this video (e.g. 'Would you still pay $65 if...?')",
   "description": "2–3 sentence summary with the main keywords",
   "tags": ["8–15 tags"],
   "category_id": "27",
@@ -156,6 +158,12 @@ No sensational or misleading titles, no distressing content, no fake people or t
 ## Subtitles
 Every long video and Short gets a clean English SRT (2 lines, ≤ 42 chars) uploaded as a caption
 track — long-form has no burned-in captions, Shorts do.
+
+## End screen + pinned comment (every long video)
+- End screen (last 20 s): template "1 video, 1 subscribe", video = "Best for viewer". The narration's
+  last ~20 s should be the closing question + tease, with no new facts, so nothing important is covered.
+- Pinned comment: one specific question tied to the video that invites an answer (not "like and
+  subscribe"). Rotate: topic request / opinion question / "what surprised you most?".
 
 ## Cadence
 2 videos per week (Mon + Thu publish). Quality over volume.

@@ -84,6 +84,13 @@ def upload(out_dir: Path, meta=None, publish_at=None, shorts=True):
         except Exception as e:  # requires a phone-verified channel
             print(f"  thumbnail not set: {e}")
     add_captions(yt, vid, out_dir / "captions.srt")
+    if meta.get("pinned_comment"):
+        try:  # posted as the channel; pinning itself is a Studio-only action (done in the browser)
+            yt.commentThreads().insert(part="snippet", body={"snippet": {"videoId": vid, "topLevelComment": {
+                "snippet": {"textOriginal": meta["pinned_comment"]}}}}).execute()
+            print("  comment posted (pin it in Studio)")
+        except Exception as e:
+            print(f"  comment not posted: {e}")
     rec = {"id": vid, "publish_at": publish_at, "shorts": []}
     if shorts:
         # Shorts go out one per day after the long video, each linking back to it.

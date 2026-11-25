@@ -378,6 +378,9 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
         "category_id": spec.get("category_id", "27"),
         "publish_at": spec.get("publish_at"),
         "duration": round(t, 1),
+        "pinned_comment": spec.get("pinned_comment",
+                                   "Which company should we break down next? Drop your pick below. We read every "
+                                   "comment, and the most-requested companies get their own full breakdown."),
     }
     (out / "metadata.json").write_text(json.dumps(meta, indent=2))
 
