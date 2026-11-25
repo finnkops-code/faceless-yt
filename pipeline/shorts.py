@@ -279,7 +279,7 @@ def build_short(sh, k, spec, out: Path, credits_long, track):
     if "#shorts" not in title.lower():
         title = f"{title[:90]} #Shorts"
     desc = (sh.get("description") or sh["narration"].split(". ")[0] + ".").strip()
-    desc += f"\n\nFull breakdown: {spec['title']}\n{{LONG_URL}}\n\n#Shorts #business #howtheymakemoney"
+    desc += f"\n\nFull breakdown: {spec['title']}\n{spec.get('long_url', '{LONG_URL}')}\n\n#Shorts #business #howtheymakemoney"
     music = [c for c in credits_long if "Kevin MacLeod" in c]
     if music:
         desc += "\n\n" + music[0]

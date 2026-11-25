@@ -275,6 +275,16 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
     chapter_no = 0
     thumb_pool = []
     FALLBACK_IMAGES[:] = spec.get("fallback_images", [])
+    if spec.get("shorts_only"):              # Shorts for an already-published long video
+        from .music import pick_track
+        from .shorts import build_short
+        track, mc = pick_track(slug + "shorts")
+        for k, sh in enumerate(spec.get("shorts", [])[:3]):
+            try:
+                build_short(sh, k, spec, out, [mc] if mc else [], track)
+            except Exception as e:
+                print(f"[{slug}] short {k + 1} failed: {e}")
+        return out
     for i, sec in enumerate(spec["sections"]):
         print(f"[{slug}] section {i + 1}/{len(spec['sections'])}")
         mp3 = work / f"s{i:02d}.mp3"

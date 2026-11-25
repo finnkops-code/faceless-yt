@@ -25,7 +25,7 @@ def main():
     for p in items:
         out = build(p)
         rec = {"slug": out.name, "dir": str(out.relative_to(ROOT)), "mode": mode}
-        if mode == "api":
+        if mode == "api" and (out / "video.mp4").exists():
             from .upload import upload
             rec["video_id"] = upload(out)
         DONE.mkdir(parents=True, exist_ok=True)
