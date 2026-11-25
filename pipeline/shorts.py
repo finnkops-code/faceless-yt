@@ -187,7 +187,8 @@ def build_short(sh, k, spec, out: Path, credits_long, track):
 
     # footage
     n = max(1, math.ceil(seg / SHOT))
-    pool = _shots(sh, n, work, set(), [], slug, 100 + k)
+    photo_credits = []
+    pool = _shots(sh, n, work, set(), photo_credits, slug, 100 + k)
     if not pool:
         raise RuntimeError("no footage for short")
     clips = []
@@ -280,9 +281,9 @@ def build_short(sh, k, spec, out: Path, credits_long, track):
         title = f"{title[:90]} #Shorts"
     desc = (sh.get("description") or sh["narration"].split(". ")[0] + ".").strip()
     desc += f"\n\nFull breakdown: {spec['title']}\n{spec.get('long_url', '{LONG_URL}')}\n\n#Shorts #business #howtheymakemoney"
-    music = [c for c in credits_long if "Kevin MacLeod" in c]
-    if music:
-        desc += "\n\n" + music[0]
+    from .render import compact_credits
+    music = [c for c in credits_long if "Kevin MacLeod" in c][:1]
+    desc += compact_credits(music + photo_credits)
     desc += "\nNarration uses a synthetic voice."
     meta = {"title": title[:100], "description": desc[:4900],
             "tags": (sh.get("tags") or spec.get("tags", []))[:20] + ["shorts"],
