@@ -89,3 +89,93 @@ def make_thumbnail(spec: dict, clip, out: Path, fonts: Path):
     d.rectangle([56, y + 30, 56 + 170, y + 42], fill=GOLD)
     canvas.save(out, quality=93)
     return out
+
+
+# ---------------------------------------------------------------- A/B/C variants for "Test & compare"
+def _shadow_text(d, xy, text, font, fill, anchor="la", off=5):
+    d.text((xy[0] + off, xy[1] + off), text, font=font, fill=(0, 0, 0), anchor=anchor)
+    d.text(xy, text, font=font, fill=fill, anchor=anchor)
+
+
+def _full_bleed(clip, dark=0.55, anchor_x=0.5):
+    try:
+        photo = _load(clip)
+    except Exception:
+        photo = Image.new("RGB", (W, H), (40, 46, 56))
+    photo = ImageEnhance.Contrast(ImageEnhance.Color(photo).enhance(0.9)).enhance(1.1)
+    img = _cover(photo, W, H, anchor_x)
+    return Image.blend(img, Image.new("RGB", (W, H), PANEL), dark)
+
+
+def _wordmark(d, fonts, x=56, y=46):
+    wm = ImageFont.truetype(str(fonts / "Inter-Bold.otf"), 22)
+    d.text((x, y), BRAND_WORD, font=wm, fill=GOLD)
+    d.rectangle([x, y + 30, x + d.textlength(BRAND_WORD, font=wm), y + 33], fill=GOLD)
+
+
+def thumb_number(v: dict, clip, out: Path, fonts: Path):
+    """Variant B: one giant number dominates (tests 'number' curiosity)."""
+    img = _full_bleed(clip, 0.58, float(v.get("photo_anchor", 0.5)))
+    d = ImageDraw.Draw(img)
+    _wordmark(d, fonts)
+    num, label = v.get("number", "?"), (v.get("label") or "").upper()
+    size = 330
+    while True:
+        f = ImageFont.truetype(str(fonts / "Anton-Regular.ttf"), size)
+        if d.textlength(num, font=f) <= W - 160 or size <= 120:
+            break
+        size -= 10
+    _shadow_text(d, (W // 2, H // 2 - 40), num, f, GOLD, anchor="mm", off=8)
+    if label:
+        fl = ImageFont.truetype(str(fonts / "Anton-Regular.ttf"), 78)
+        while d.textlength(label, font=fl) > W - 140 and fl.size > 44:
+            fl = ImageFont.truetype(str(fonts / "Anton-Regular.ttf"), fl.size - 4)
+        _shadow_text(d, (W // 2, H // 2 + size // 2 + 10), label, fl, INK, anchor="mm")
+    img.save(out, quality=93)
+    return out
+
+
+def thumb_band(v: dict, clip, out: Path, fonts: Path):
+    """Variant C: full photo, bold statement on a dark band at the bottom (tests photo-first)."""
+    img = _full_bleed(clip, 0.12, float(v.get("photo_anchor", 0.5)))
+    band = Image.new("RGBA", (W, 250), PANEL + (235,))
+    img = img.convert("RGBA")
+    img.alpha_composite(band, (0, H - 250))
+    img = img.convert("RGB")
+    d = ImageDraw.Draw(img)
+    d.rectangle([0, H - 250, W, H - 242], fill=GOLD)
+    _wordmark(d, fonts)
+    text = (v.get("text") or "HOW DO THEY MAKE MONEY?").upper()
+    hl = {w.strip("?!.,").upper() for w in (v.get("highlight") or "").split()}
+    size = 120
+    while True:
+        f = ImageFont.truetype(str(fonts / "Anton-Regular.ttf"), size)
+        if d.textlength(text, font=f) <= W - 100 or size <= 60:
+            break
+        size -= 4
+    x = (W - d.textlength(text, font=f)) / 2
+    y = H - 125
+    for w in text.split():
+        col = GOLD if w.strip("?!.,") in hl else INK
+        _shadow_text(d, (x, y), w, f, col, anchor="lm")
+        x += d.textlength(w + " ", font=f)
+    img.save(out, quality=93)
+    return out
+
+
+def make_variants(spec: dict, photos: list, out_dir: Path, fonts: Path, callouts=()):
+    """thumbnail.jpg (A: split), thumbnail_b.jpg (B: big number), thumbnail_c.jpg (C: photo + band).
+    Each variant uses a different photo where possible so the test also compares images."""
+    photos = list(photos) or [None]
+    pick = lambda k: photos[k % len(photos)]
+    a = make_thumbnail(spec, pick(0), out_dir / "thumbnail.jpg", fonts)
+    vs = {v.get("style"): v for v in spec.get("variants", [])}
+    b = vs.get("number") or {}
+    if not b.get("number") and callouts:
+        b = {"number": callouts[0].get("text", ""), "label": callouts[0].get("label", "")}
+    c = vs.get("band") or {"text": spec.get("text", ""), "highlight": spec.get("highlight", "")}
+    out = [a]
+    if b.get("number"):
+        out.append(thumb_number(b, pick(1), out_dir / "thumbnail_b.jpg", fonts))
+    out.append(thumb_band(c, pick(2), out_dir / "thumbnail_c.jpg", fonts))
+    return out

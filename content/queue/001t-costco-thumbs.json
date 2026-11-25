@@ -1,0 +1,32 @@
+{
+  "slug": "001t-costco-thumbs",
+  "thumbs_only": true,
+  "title": "Costco Barely Profits From Its Products. So How Does It Make $9 Billion?",
+  "fallback_images": [
+    "commons:Costco warehouse interior",
+    "commons:Costco store aisle",
+    "commons:Costco Wholesale exterior",
+    "commons:Costco shoppers",
+    "commons:Kirkland Signature",
+    "commons:Costco food court",
+    "commons:Costco gas station",
+    "commons:Costco parking lot",
+    "commons:Costco checkout"
+  ],
+  "thumbnail": {
+    "text": "The $65 Card Behind $9 Billion",
+    "highlight": "$65 $9",
+    "variants": [
+      {
+        "style": "number",
+        "number": "$5.9 BILLION",
+        "label": "just for letting you shop"
+      },
+      {
+        "style": "band",
+        "text": "Costco's real product isn't groceries",
+        "highlight": "ISN'T"
+      }
+    ]
+  }
+}

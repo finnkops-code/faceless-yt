@@ -65,7 +65,7 @@ jobs:
           for d in output/*/; do
             slug=$(basename "$d")
             extra=()
-            for f in video.mp4 thumbnail.jpg metadata.json captions.srt; do [ -f "$d/$f" ] && extra+=("$d/$f"); done
+            for f in video.mp4 thumbnail.jpg thumbnail_b.jpg thumbnail_c.jpg metadata.json captions.srt; do [ -f "$d/$f" ] && extra+=("$d/$f"); done
             for s in "$d"short_*/; do
               [ -f "$s/video.mp4" ] || continue
               n=$(basename "$s")

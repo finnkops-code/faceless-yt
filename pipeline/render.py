@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 from . import brand, tts, visuals
-from .thumbnail import make_thumbnail
+from .thumbnail import make_thumbnail, make_variants
 
 ROOT = Path(__file__).resolve().parent.parent
 FONTS = ROOT / "assets" / "fonts"
@@ -276,6 +276,10 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
     chapter_no = 0
     thumb_pool = []
     FALLBACK_IMAGES[:] = spec.get("fallback_images", [])
+    if spec.get("thumbs_only"):              # new A/B/C thumbnails for an already-published video
+        photos = visuals.fetch_photos(spec.get("fallback_images", []), ROOT / "cache", set(), 6, [])
+        make_variants(spec.get("thumbnail", {}), photos, out, FONTS)
+        return out
     if spec.get("shorts_only"):              # Shorts for an already-published long video
         from .music import pick_track
         from .shorts import build_short
@@ -352,8 +356,11 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
            "-movflags", "+faststart", final)
 
     # --- thumbnail + metadata
-    thumb_src = thumb_pool[0][1] if thumb_pool else clips[0]
-    make_thumbnail(spec.get("thumbnail", {}), thumb_src, out / "thumbnail.jpg", FONTS)
+    photos = [p for k, p in thumb_pool if k == "img"] + [p for k, p in thumb_pool if k == "vid"] or [clips[0]]
+    all_callouts = [c for s in spec["sections"] for c in s.get("callouts", [])]
+    big = sorted(all_callouts, key=lambda c: (("billion" in c.get("text", "")) + ("$" in c.get("text", ""))),
+                 reverse=True)[:1]
+    make_variants(spec.get("thumbnail", {}), photos, out, FONTS, callouts=big)
 
     desc = spec["description"].strip()
     if len(chapters) >= 3 and chapters[0][0] == 0:

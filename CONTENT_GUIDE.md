@@ -17,6 +17,11 @@ Read `data/growth.md` (scoreboard) and `data/stats.json` before every script and
   ("Costco Barely Profits From Its Products. So How Does It Make $9 Billion?").
   Write 3 title options in the script (`title_options`) and pick the strongest as `title`.
 - Thumbnail text 3–5 words, never a repeat of the title; one big number or contrast.
+- Every video gets 3 thumbnails for YouTube's "Test & compare" (YouTube picks the one with the most
+  watch time): A = split photo + headline (`text`), B = one giant number (`variants` style "number"),
+  C = full photo + statement band (`variants` style "band"). Make A, B and C test genuinely different
+  angles (e.g. the paradox vs the money vs the product) — not three wordings of the same idea.
+  Numbers on thumbnails must be exactly true (no rounding up, no merging two different figures).
 
 **2. Watch time = retention.** Mid-roll ads and recommendations both depend on it.
 - First 30 seconds: state the paradox immediately, promise the payoff, no channel intro, no "in this video".
@@ -74,7 +79,9 @@ No sensational or misleading titles, no distressing content, no fake people or t
   "description": "2–3 sentence summary with the main keywords",
   "tags": ["8–15 tags"],
   "category_id": "27",
-  "thumbnail": {"text": "3–6 WORDS", "highlight": "WORDS TO COLOR YELLOW"},
+  "thumbnail": {"text": "3–6 WORDS", "highlight": "WORDS TO COLOR YELLOW",
+    "variants": [{"style": "number", "number": "$5.9 BILLION", "label": "3–6 words of context"},
+                 {"style": "band", "text": "a different angle, 4–7 words", "highlight": "WORD"}]},
   "sections": [
     {"chapter": "optional chapter name", "narration": "...",
      "visuals": ["stock video query", "..."], "images": ["commons:Costco store exterior", "photo query"]},
