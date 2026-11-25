@@ -1,10 +1,23 @@
 {
-  "taken": "2026-11-25T10:52:38.672806+00:00",
+  "taken": "2026-11-25T12:24:41.392654+00:00",
   "channel": {
     "viewCount": "0",
-    "subscriberCount": "0",
+    "subscriberCount": "1",
     "hiddenSubscriberCount": false,
-    "videoCount": "0"
+    "videoCount": "1"
   },
-  "videos": []
+  "videos": [
+    {
+      "id": "uJXVrf97tn4",
+      "title": "Costco Barely Profits From Its Products. So How Does It Make $9 Billion?",
+      "published": "2026-11-25T11:22:49Z",
+      "privacy": "public",
+      "duration": "PT8M22S",
+      "viewCount": 1,
+      "likeCount": 0,
+      "dislikeCount": 0,
+      "favoriteCount": 0,
+      "commentCount": 0
+    }
+  ]
 }
