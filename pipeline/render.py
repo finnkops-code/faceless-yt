@@ -312,10 +312,9 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
     desc = spec["description"].strip()
     if len(chapters) >= 3 and chapters[0][0] == 0:
         desc += "\n\nChapters\n" + "\n".join(f"{ts(s)} {name}" for s, name in chapters)
-    if credits:
-        desc += "\n\nImage credits\n" + "\n".join(f"- {c}" for c in dict.fromkeys(credits))
     if spec.get("sources"):
         desc += "\n\nSources\n" + "\n".join(f"- {s}" for s in spec["sources"])
+    desc += compact_credits(credits)
     desc += "\n\nResearch, script and data visuals by Hidden Ledger. Narration uses a synthetic voice."
     meta = {
         "title": spec["title"][:100],
@@ -327,6 +326,26 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
     }
     (out / "metadata.json").write_text(json.dumps(meta, indent=2))
     print(f"[{slug}] done → {final} ({t / 60:.1f} min)")
+    return out
+
+
+def compact_credits(credits):
+    """Short attribution block: music line + photographers grouped by licence (YouTube 5000-char limit)."""
+    import re as _re
+    music = [c for c in credits if c.startswith("Music:")]
+    by_lic = {}
+    for c in dict.fromkeys(credits):
+        if c.startswith("Music:"):
+            continue
+        m = _re.match(r".* by (.+?), ([^,]+), via Wikimedia Commons$", c)
+        if m:
+            by_lic.setdefault(m.group(2).strip(), []).append(m.group(1).strip()[:40])
+    out = ""
+    if music:
+        out += "\n\n" + music[0]
+    if by_lic:
+        parts = [f"{lic}: " + ", ".join(dict.fromkeys(a)) for lic, a in by_lic.items()]
+        out += "\n\nPhotos via Wikimedia Commons — " + "; ".join(parts)
     return out
 
 
