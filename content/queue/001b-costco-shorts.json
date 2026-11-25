@@ -27,14 +27,13 @@
       "title": "Costco barely profits from the stuff it sells",
       "headline": "Costco's profit isn't in the shopping cart",
       "narration": "Costco sold two hundred ninety seven billion dollars of merchandise last year. Groceries, tires, televisions, gas. And it kept a gross margin of only about eleven percent, far below a normal retailer. So where does the profit come from? Membership fees. Five point nine billion dollars of them. That one line is equal to about sixty four percent of Costco's entire net income. Costco isn't really a store. It's a club that happens to sell groceries.",
-      "visuals": [
-        "warehouse store shelves",
-        "shopping cart supermarket aisle",
-        "supermarket checkout cashier"
-      ],
+      "visuals": [],
       "images": [
         "commons:Costco warehouse interior",
-        "commons:Costco store exterior"
+        "commons:Costco store exterior",
+        "commons:Costco shopping carts",
+        "commons:Costco checkout",
+        "commons:Kirkland Signature"
       ],
       "callouts": [
         {
@@ -76,13 +75,13 @@
       "headline": "The hot dog that hasn't changed price since the 80s",
       "narration": "A hot dog and a soda at Costco still cost one dollar fifty, the same price as in the nineteen eighties. Inflation should have pushed it far higher. So why doesn't Costco raise it? Because the hot dog isn't the product. You are. Costco makes its money when you renew your membership, and in the US and Canada, about ninety two percent of members do, every single year. A cheap hot dog is a tiny cost to keep that habit alive.",
       "visuals": [
-        "hot dog",
-        "food court",
-        "soda cup drink"
+        "hot dog"
       ],
       "images": [
         "commons:Costco food court",
-        "commons:Costco hot dog"
+        "commons:Costco hot dog",
+        "commons:Costco warehouse interior",
+        "commons:Costco store exterior"
       ],
       "callouts": [
         {
