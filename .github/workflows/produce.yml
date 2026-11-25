@@ -71,7 +71,9 @@ jobs:
       - name: Stats snapshot
         if: env.YT_REFRESH_TOKEN != ''
         continue-on-error: true
-        run: python -m pipeline.stats
+        run: |
+          mkdir -p data
+          python -m pipeline.stats 2> >(tee data/stats_error.txt >&2) && rm -f data/stats_error.txt
 
       - name: Commit queue/state changes
         run: |
