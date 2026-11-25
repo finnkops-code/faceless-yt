@@ -44,7 +44,7 @@ jobs:
       - run: pip install -q -r requirements.txt
       - name: Install CLIP for visual QA (CPU)
         continue-on-error: true
-        run: pip install -q torch --index-url https://download.pytorch.org/whl/cpu && pip install -q open_clip_torch
+        run: pip install -q torch torchvision --index-url https://download.pytorch.org/whl/cpu && pip install -q open_clip_torch
       - name: Cache voice model
         uses: actions/cache@v4
         with:
