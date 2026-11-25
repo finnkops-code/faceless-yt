@@ -1,5 +1,5 @@
 {
-  "taken": "2026-11-25T15:35:35.281364+00:00",
+  "taken": "2026-11-25T15:38:30.251863+00:00",
   "channel": {
     "viewCount": "0",
     "subscriberCount": "1",
@@ -42,13 +42,13 @@
       "published": "2026-11-25T14:58:53Z",
       "privacy": "public",
       "duration": "PT38S",
-      "viewCount": 16,
+      "viewCount": 0,
       "likeCount": 0,
       "dislikeCount": 0,
       "favoriteCount": 0,
       "commentCount": 0,
       "is_short": true,
-      "views_per_day": 16.0
+      "views_per_day": 0.0
     },
     {
       "id": "RO0t7iF2Epg",
