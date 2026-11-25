@@ -109,6 +109,7 @@ def _full_bleed(clip, dark=0.55, anchor_x=0.5):
 
 def _wordmark(d, fonts, x=56, y=46):
     wm = ImageFont.truetype(str(fonts / "Inter-Bold.otf"), 22)
+    d.rectangle([x - 14, y - 12, x + d.textlength(BRAND_WORD, font=wm) + 14, y + 44], fill=PANEL)
     d.text((x, y), BRAND_WORD, font=wm, fill=GOLD)
     d.rectangle([x, y + 30, x + d.textlength(BRAND_WORD, font=wm), y + 33], fill=GOLD)
 
