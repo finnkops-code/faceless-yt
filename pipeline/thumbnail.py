@@ -19,8 +19,15 @@ def make_thumbnail(spec: dict, clip: Path, out: Path, fonts: Path):
     highlight = (spec.get("highlight") or "").upper()
     frame = out.with_suffix(".frame.png")
     try:
-        _frame(clip, frame)
-        img = Image.open(frame).convert("RGB")
+        if Path(clip).suffix.lower() in (".jpg", ".jpeg", ".png", ".webp"):
+            img = Image.open(clip).convert("RGB")
+            r = max(W / img.width, H / img.height)
+            img = img.resize((int(img.width * r) + 1, int(img.height * r) + 1))
+            l, t = (img.width - W) // 2, (img.height - H) // 2
+            img = img.crop((l, t, l + W, t + H))
+        else:
+            _frame(clip, frame)
+            img = Image.open(frame).convert("RGB")
     except Exception:
         img = Image.new("RGB", (W, H), (14, 17, 22))
     img = img.filter(ImageFilter.GaussianBlur(1.2))

@@ -41,9 +41,13 @@ No sensational or misleading titles, no distressing content, no fake people or t
   "sections": [
     {"chapter": "optional chapter name", "narration": "...",
      "visuals": ["stock video query", "..."], "images": ["commons:Costco store exterior", "photo query"]},
-    {"narration": "...", "chart": {"type": "bar|hbar|line", "title": "...", "subtitle": "units",
-      "labels": ["..."], "values": [1.0], "unit": "$|%|M|...", "decimals": 1,
-      "highlight": "label to color yellow (optional)", "source": "short source"}},
+    {"narration": "...", "visuals": ["..."],
+     "callouts": [{"at": "exact words from narration where the number is spoken",
+                   "text": "$9.2 billion", "label": "Net income, fiscal 2026"}]},
+    {"narration": "...", "visuals": ["..."], "chart": {"type": "bar|hbar|line", "title": "...",
+      "subtitle": "optional context", "labels": ["..."], "values": [5.9, 9.2],
+      "prefix": "$", "suffix": " billion", "decimals": 1,
+      "highlight": "label to color gold (optional)", "source": "short source"}},
     {"title_card": "short big statement", "kicker": "small label", "narration": "..."}
   ],
   "sources": ["full source names"]
@@ -61,6 +65,24 @@ No sensational or misleading titles, no distressing content, no fake people or t
 - `visuals`: 2–3 concrete, filmable stock-footage queries per section (objects/places/actions, no brand
   logos, no specific people). Pexels has no brand footage — "airplane cabin", not "Ryanair plane".
 - End with a CTA asking which company to break down next (comments = topic ideas + engagement).
+
+## Production quality rules (Finn's standard: must feel like a professional, human-made production)
+- **Every number that is spoken must be on screen.** Either the section has a `chart`, or each number
+  gets a `callouts` entry. `at` = 2–4 consecutive words copied exactly from the narration where the
+  number is said (the card appears at that moment). `text` = the number formatted for the eye
+  ("$5.9 billion", "92.3%", "84.1 million", "$60 → $65"), `label` = 2–6 words of context.
+  Max 3 callouts per section; don't put a callout on a section that already shows the same number in a chart.
+- **Charts show full values:** always set `prefix`/`suffix` so labels read "$5.9 billion", never "$5.9".
+  Keep labels short (≤ 28 characters). 2–6 data points per chart.
+- **Footage must match what is being said in that sentence.** Write literal, filmable queries tied to the
+  topic (e.g. "airplane cabin passengers", "supermarket checkout cashier"). Never generic finance filler
+  ("money counting", "stock market screen", "trading chart") — those return crypto/bitcoin footage.
+  Crypto, bitcoin and trading imagery are blocked unless the video is about them.
+- Prefer real photos of the company via `images` with `commons:` (stores, HQ, products, food) — they
+  make the video feel specific instead of stock.
+- Use `title_card` max 2× per video (hook statement + one key insight). Chapters get an automatic
+  numbered label; first section is the cold-open hook, then the Hidden Ledger ident plays automatically.
+- No word-by-word burned captions (subtitles go up as a separate SRT track).
 
 ## Cadence
 2 videos per week (Mon + Thu publish). Quality over volume.

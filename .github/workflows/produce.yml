@@ -38,8 +38,10 @@ jobs:
       - name: Cache voice model
         uses: actions/cache@v4
         with:
-          path: models
-          key: kokoro-v1.0
+          path: |
+            models
+            assets/music_cache
+          key: kokoro-v1.0-music-v1
       - name: Download Kokoro voice model (first run only)
         run: |
           mkdir -p models

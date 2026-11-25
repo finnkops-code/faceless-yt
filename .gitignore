@@ -3,3 +3,4 @@ cache/
 __pycache__/
 client_secret*.json
 *.pyc
+assets/music_cache/

@@ -23,6 +23,41 @@ ACCENT = "#F5B700"
 SECOND = "#3FA7D6"
 
 
+# ---------------- relevance ----------------
+BLOCK = {"bitcoin", "crypto", "cryptocurrency", "blockchain", "ethereum", "nft", "btc", "altcoin",
+         "dogecoin", "mining rig", "forex", "casino", "gambling", "halloween", "christmas", "cartoon",
+         "animation", "3d", "render", "illustration", "vector", "clipart"}
+STOP = {"a", "an", "the", "of", "in", "on", "and", "with", "for", "to", "at", "by", "from", "store",
+        "people", "close", "up", "view", "shot", "footage", "video", "photo"}
+HOUSE_GRADE = ("eq=contrast=1.06:saturation=0.82:gamma=0.98,"
+               "colorbalance=rs=0.02:bs=-0.03:rh=0.03:bh=-0.03,vignette=angle=PI/5")
+
+
+def _words(text):
+    import re
+    return {w.rstrip("s") for w in re.findall(r"[a-z0-9]+", (text or "").lower()) if len(w) > 2}
+
+
+def relevance(query, meta_text):
+    """Score how well a stock asset's tags/slug match the query. -1 = blocked."""
+    q, m = _words(query), _words(meta_text)
+    low = (meta_text or "").lower()
+    for b in BLOCK:
+        if b in low and b not in query.lower():
+            return -1
+    keys = q - {w.rstrip("s") for w in STOP}
+    return len(keys & m)
+
+
+def _rank(query, cands):
+    """Best tag matches first; blocked items removed; zero-overlap items only if nothing matches."""
+    scored = [(relevance(query, c[-1]), c) for c in cands]
+    good = sorted([x for x in scored if x[0] >= 1], key=lambda x: -x[0])
+    if not good:
+        good = [x for x in scored if x[0] == 0][:2]
+    return [c[:-1] for _, c in good]
+
+
 def _get_json(url, headers=None):
     req = urllib.request.Request(url, headers={**UA, **(headers or {})})
     with urllib.request.urlopen(req, timeout=30) as r:
@@ -49,8 +84,8 @@ def _pexels(query, n=6):
                  and f.get("file_type") == "video/mp4"]
         if files:
             best = min(files, key=lambda f: abs(f["width"] - 1920))
-            urls.append((f"pexels-{v['id']}", best["link"]))
-    return urls
+            urls.append((f"pexels-{v['id']}", best["link"], v.get("url", "")))
+    return _rank(query, urls)
 
 
 def _pixabay(query, n=6):
@@ -58,15 +93,15 @@ def _pixabay(query, n=6):
     if not key:
         return []
     q = urllib.parse.quote(query)
-    data = _get_json(f"https://pixabay.com/api/videos/?key={key}&q={q}&per_page={max(n, 3)}")
+    data = _get_json(f"https://pixabay.com/api/videos/?key={key}&q={q}&per_page={max(n * 3, 10)}&safesearch=true")
     out = []
     for h in data.get("hits", []):
         if h.get("type") and h["type"] != "film":   # skip animations / 3D renders
             continue
         vid = h["videos"].get("large") or h["videos"].get("medium")
         if vid and vid.get("url"):
-            out.append((f"pixabay-{h['id']}", vid["url"]))
-    return out
+            out.append((f"pixabay-{h['id']}", vid["url"], h.get("tags", "")))
+    return _rank(query, out)
 
 
 def fetch_broll(queries, cache: Path, used: set, need: int):
@@ -119,7 +154,7 @@ def fetch_broll(queries, cache: Path, used: set, need: int):
 
 def normalize_clip(src: Path, dest: Path, duration: float, start: float = 0.0):
     vf = (f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},"
-          f"fps={FPS},setsar=1,eq=contrast=1.04:saturation=1.08")
+          f"fps={FPS},setsar=1,{HOUSE_GRADE}")
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{start:.2f}", "-i", str(src),
                     "-t", f"{duration:.3f}", "-an", "-vf", vf, "-c:v", "libx264",
                     "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p", str(dest)],
@@ -287,6 +322,8 @@ def _commons(query, n=8):
         title = p.get("title", "")
         if not any(lic.startswith(l) for l in OK_LICENSES) or "nc" in lic or "nd" in lic:
             continue
+        if relevance(query, title) < 0:
+            continue
         if "logo" in title.lower() or ii.get("width", 0) < 1200 or ii.get("width", 0) < ii.get("height", 1):
             continue
         credit = f"{title.replace('File:', '')} by {_strip_html(meta.get('Artist', {}).get('value', 'unknown'))[:80]}, {meta.get('LicenseShortName', {}).get('value')}, via Wikimedia Commons"
@@ -301,7 +338,7 @@ def _pexels_photos(query, n=8):
     q = urllib.parse.quote(query)
     data = _get_json(f"https://api.pexels.com/v1/search?query={q}&orientation=landscape&per_page={n}",
                      {"Authorization": key})
-    return [(f"pexelsimg-{p['id']}", p["src"]["large2x"], None) for p in data.get("photos", [])]
+    return [(a, b, None) for a, b in _rank(query, [(f"pexelsimg-{p['id']}", p["src"]["large2x"], (p.get("alt") or "") + " " + p.get("url", "")) for p in data.get("photos", [])])]
 
 
 def _pixabay_photos(query, n=8):
@@ -310,9 +347,8 @@ def _pixabay_photos(query, n=8):
         return []
     q = urllib.parse.quote(query)
     data = _get_json(f"https://pixabay.com/api/?key={key}&q={q}&image_type=photo&editors_choice=false"
-                     f"&orientation=horizontal&min_width=1600&safesearch=true&per_page={max(n, 3)}")
-    return [(f"pixabayimg-{h['id']}", h.get("largeImageURL") or h["webformatURL"], None)
-            for h in data.get("hits", [])]
+                     f"&orientation=horizontal&min_width=1600&safesearch=true&per_page={max(n * 3, 10)}")
+    return [(a, b, None) for a, b in _rank(query, [(f"pixabayimg-{h['id']}", h.get("largeImageURL") or h["webformatURL"], h.get("tags", "")) for h in data.get("hits", [])])]
 
 
 def fetch_photos(queries, cache: Path, used: set, need: int, credits: list):
@@ -364,7 +400,7 @@ def ken_burns(img: Path, dest: Path, duration: float, seed: str):
         x = "iw/2-(iw/zoom/2)"
     vf = (f"scale={W*2}:{H*2}:force_original_aspect_ratio=increase,crop={W*2}:{H*2},"
           f"zoompan=z='{z}':x='{x}':y='ih/2-(ih/zoom/2)':d={frames}:s={W}x{H}:fps={FPS},"
-          f"setsar=1,eq=contrast=1.04:saturation=1.06")
+          f"setsar=1,{HOUSE_GRADE}")
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(img), "-t", f"{duration:.3f}",
                     "-vf", vf, "-c:v", "libx264", "-preset", "veryfast", "-crf", "19",
                     "-pix_fmt", "yuv420p", str(dest)], check=True)

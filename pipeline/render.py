@@ -10,7 +10,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from . import tts, visuals
+from . import brand, tts, visuals
 from .thumbnail import make_thumbnail
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -103,13 +103,86 @@ def _render_shot(kind, src, dest, dur, rnd, key, reuse=False):
     visuals.normalize_clip(src, dest, dur, start)
 
 
+def overlay_seq(bg_clip, frames_dir, dest, duration):
+    """Blurred footage + animated RGBA frame sequence (last frame held)."""
+    n = len(list(frames_dir.glob("f*.png")))
+    hold = max(0.1, duration - n / visuals.FPS)
+    ff("-i", bg_clip, "-framerate", visuals.FPS, "-i", frames_dir / "f%03d.png",
+       "-filter_complex",
+       f"[0:v]boxblur=22:2,eq=brightness=-0.10:saturation=0.7[bg];"
+       f"[1:v]format=rgba,tpad=stop_mode=clone:stop_duration={hold:.3f}[fg];"
+       f"[bg][fg]overlay=0:0:eof_action=repeat,fps={visuals.FPS},setsar=1[v]",
+       "-map", "[v]", "-t", f"{duration:.3f}", "-c:v", "libx264", "-preset", "veryfast",
+       "-crf", "19", "-pix_fmt", "yuv420p", dest)
+
+
+def _norm(w):
+    return re.sub(r"[^a-z0-9]", "", w.lower())
+
+
+def phrase_time(words, phrase):
+    """Start time of `phrase` in the section's word timings (None if not found)."""
+    target = [_norm(x) for x in phrase.split() if _norm(x)]
+    toks = [_norm(w) for _, _, w in words]
+    k = min(3, len(target))
+    for j in range(len(toks) - k + 1):
+        if toks[j:j + k] == target[:k]:
+            return words[j][0]
+    return None
+
+
+def finish_section(clips, sec, i, seg, words, work, chapter_no):
+    """Concat shots, then layer chapter label + timed stat callouts on top."""
+    lst = work / f"s{i:02d}_clips.txt"
+    lst.write_text("".join(f"file '{c.resolve()}'\n" for c in clips))
+    base = work / f"s{i:02d}_base.mp4"
+    ff("-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", base)
+    layers = []  # (png, start, end, slide)
+    if sec.get("chapter") and chapter_no:
+        png = work / f"chap{i:02d}.png"
+        brand.chapter_png(chapter_no, sec["chapter"], png)
+        layers.append((png, 0.25, min(seg - 0.2, 4.0), False))
+    cos = sec.get("callouts", [])
+    busy_until = 0.0
+    for k, co in enumerate(cos):
+        st = phrase_time(words, co.get("at", "")) if co.get("at") else None
+        if st is None:
+            st = seg * (k + 0.5) / (len(cos) + 0.5)
+        st = max(st, busy_until + 0.15)
+        en = min(seg - 0.15, st + float(co.get("hold", 3.6)))
+        if en - st < 1.2:
+            continue
+        png = work / f"co{i:02d}_{k}.png"
+        brand.callout_png(co["text"], co.get("label", ""), png)
+        layers.append((png, st, en, True))
+        busy_until = en
+    final = work / f"sec{i:02d}.mp4"
+    if not layers:
+        base.rename(final)
+        return final
+    args, chains, prev = ["-i", base], [], "[0:v]"
+    for n, (png, st, en, slide) in enumerate(layers, start=1):
+        args += ["-loop", "1", "-t", f"{seg:.3f}", "-i", png]
+        d = en - st
+        chains.append(f"[{n}:v]format=rgba,fade=in:st={st:.2f}:d=0.35:alpha=1,"
+                      f"fade=out:st={en - 0.35:.2f}:d=0.35:alpha=1[l{n}]")
+        x = f"'if(lt(t,{st:.2f}+0.4),-60+60*(t-{st:.2f})/0.4,0)'" if slide else "0"
+        chains.append(f"{prev}[l{n}]overlay=x={x}:y=0:enable='between(t,{st:.2f},{en:.2f})'[o{n}]")
+        prev = f"[o{n}]"
+    ff(*args, "-filter_complex", ";".join(chains), "-map", prev, "-t", f"{seg:.3f}",
+       "-c:v", "libx264", "-preset", "veryfast", "-crf", "19", "-pix_fmt", "yuv420p", final)
+    return final
+
+
 def section_visuals(sec, i, seg, work, used, credits, slug):
     """Always moving imagery. Charts/cards are overlaid on blurred footage, never on a flat screen."""
     rnd = random.Random(f"{slug}{i}")
     graphic = None
+    chart_dir = None
     if sec.get("chart"):
-        graphic = work / f"chart{i:02d}.png"
-        visuals.render_chart(sec["chart"], graphic)
+        chart_dir = work / f"chart{i:02d}"
+        brand.chart_frames(sec["chart"], chart_dir)
+        graphic = chart_dir / "f000.png"
     elif sec.get("title_card"):
         graphic = work / f"card{i:02d}.png"
         visuals.render_title_card(sec["title_card"], graphic, sec.get("kicker", ""))
@@ -136,9 +209,13 @@ def section_visuals(sec, i, seg, work, used, credits, slug):
         bg = work / f"g{i:02d}_bg.mp4"
         _render_shot(kind, src, bg, g_dur, rnd, f"{slug}{i}g", reuse=n >= len(pool))
         c = work / f"v{i:02d}_g.mp4"
-        visuals.overlay_on(bg, graphic, c, g_dur)
+        if chart_dir:
+            overlay_seq(bg, chart_dir, c, g_dur)
+        else:
+            visuals.overlay_on(bg, graphic, c, g_dur)
         out.append(c)
-    return out
+    raw = [(k, s_) for k, s_ in pool if k == "img"] + [(k, s_) for k, s_ in pool if k == "vid"]
+    return out, raw
 
 
 def build(script_path: Path, out_root: Path = ROOT / "output"):
@@ -152,6 +229,8 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
     t = 0.0
     rnd = random.Random(slug)
 
+    chapter_no = 0
+    thumb_pool = []
     for i, sec in enumerate(spec["sections"]):
         print(f"[{slug}] section {i + 1}/{len(spec['sections'])}")
         mp3 = work / f"s{i:02d}.mp3"
@@ -163,9 +242,21 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
         cues += caption_chunks(words, t)
         if sec.get("chapter"):
             chapters.append((t, sec["chapter"]))
-
-        clips += section_visuals(sec, i, seg, work, used, credits, slug)
+            chapter_no += 1
+        shots, raw = section_visuals(sec, i, seg, work, used, credits, slug)
+        thumb_pool += raw
+        clips.append(finish_section(shots, sec, i, seg, words, work,
+                                    chapter_no if (sec.get("chapter") and i > 0) else 0))
         t += seg
+        if i == 0 and spec.get("ident", True):
+            idc = work / "ident.mp4"
+            brand.ident_clip(idc, 2.6)
+            sil = work / "ident.wav"
+            ff("-f", "lavfi", "-i", "anullsrc=r=48000:cl=stereo", "-t", "2.6", sil)
+            clips.append(idc)
+            audio_parts.append(sil)
+            chapters = [(c0, n0) for c0, n0 in chapters]
+            t += 2.6
 
     # --- concat video
     lst = work / "clips.txt"
@@ -185,15 +276,19 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
     srt.write_text("".join(
         f"{n + 1}\n{_srt(s)} --> {_srt(e)}\n{txt}\n\n" for n, (s, e, txt) in enumerate(cues)))
 
-    music = sorted((ROOT / "assets" / "music").glob("*.mp3")) if (ROOT / "assets" / "music").exists() else []
+    from .music import pick_track
+    track, music_credit = pick_track(slug)
+    music = [track] if track else []
+    if music_credit:
+        credits.append(music_credit)
     final = out / "video.mp4"
-    vf = f"ass={ass}:fontsdir={FONTS}" if spec.get("burn_captions", True) else "null"
+    vf = f"ass={ass}:fontsdir={FONTS}" if spec.get("burn_captions", False) else "null"
     if music:
-        track = rnd.choice(music)
         ff("-i", silent, "-i", narr, "-stream_loop", "-1", "-i", track,
            "-filter_complex",
-           f"[0:v]{vf}[v];[2:a]volume=0.07,afade=t=in:d=2[m];"
-           f"[1:a][m]amix=inputs=2:duration=first:dropout_transition=0[a]",
+           f"[0:v]{vf}[v];[2:a]aresample=48000,volume=0.22,afade=t=in:d=2[m];"
+           f"[1:a]asplit=2[n1][n2];[m][n2]sidechaincompress=threshold=0.03:ratio=8:attack=20:release=400[md];"
+           f"[n1][md]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[a]",
            "-map", "[v]", "-map", "[a]", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20",
            "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k", "-shortest",
            "-movflags", "+faststart", final)
@@ -203,7 +298,7 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
            "-movflags", "+faststart", final)
 
     # --- thumbnail + metadata
-    thumb_src = next((c for c in clips if "_0" in c.name), clips[0])
+    thumb_src = thumb_pool[0][1] if thumb_pool else clips[0]
     make_thumbnail(spec.get("thumbnail", {}), thumb_src, out / "thumbnail.jpg", FONTS)
 
     desc = spec["description"].strip()
@@ -213,7 +308,7 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
         desc += "\n\nImage credits\n" + "\n".join(f"- {c}" for c in dict.fromkeys(credits))
     if spec.get("sources"):
         desc += "\n\nSources\n" + "\n".join(f"- {s}" for s in spec["sources"])
-    desc += "\n\nNarration uses a synthetic voice. Research, script and data visuals are produced for this channel."
+    desc += "\n\nResearch, script and data visuals by Hidden Ledger. Narration uses a synthetic voice."
     meta = {
         "title": spec["title"][:100],
         "description": desc[:4900],
