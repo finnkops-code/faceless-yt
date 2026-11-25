@@ -1,0 +1,437 @@
+{
+  "slug": "001-how-costco-makes-money-v4",
+  "title": "Costco Barely Profits From Its Products. So How Does It Make $9 Billion?",
+  "description": "Costco sold almost $300 billion of goods last year at a gross margin of about 11%. Its real profit engine is a $65 plastic card. In this video we break down Costco's fiscal 2026 numbers: membership fees, renewal rates, Executive members, Kirkland Signature and the famous $1.50 hot dog, to show how the business actually works.",
+  "tags": [
+    "costco",
+    "how costco makes money",
+    "costco business model",
+    "costco membership",
+    "business explained",
+    "kirkland signature",
+    "costco hot dog",
+    "retail economics",
+    "business case study"
+  ],
+  "category_id": "27",
+  "thumbnail": {
+    "text": "The $65 Card Behind $9 Billion",
+    "highlight": "$65 $9"
+  },
+  "sections": [
+    {
+      "chapter": "The paradox",
+      "narration": "Last year Costco sold almost three hundred billion dollars' worth of stuff. Groceries, tires, televisions, gasoline. And on all of that, it kept a gross margin of about eleven percent. That's thin for a retailer, and it only gets thinner once you pay for the warehouses, the staff and the trucks. Yet Costco earned more than nine billion dollars in profit. So where does the money come from? The answer is a plastic card most of us keep in our wallets and barely think about.",
+      "visuals": [
+        "warehouse store shopping carts",
+        "wholesale club aisle",
+        "shopping cart groceries"
+      ],
+      "images": [
+        "commons:Costco warehouse interior",
+        "commons:Costco store exterior"
+      ],
+      "callouts": [
+        {
+          "at": "almost three hundred billion",
+          "text": "$297 billion",
+          "label": "Costco net sales, fiscal 2026"
+        },
+        {
+          "at": "gross margin of about eleven",
+          "text": "≈11%",
+          "label": "Gross margin"
+        },
+        {
+          "at": "more than nine billion",
+          "text": "$9.2 billion",
+          "label": "Net income, fiscal 2026"
+        }
+      ]
+    },
+    {
+      "title_card": "Costco sells memberships. Groceries are the bait.",
+      "kicker": "The short answer",
+      "narration": "Here's the short version. Costco doesn't really make its money selling groceries. It makes its money selling memberships, and the groceries are how it gets you to buy one.",
+      "images": [
+        "commons:Costco membership card"
+      ],
+      "visuals": [
+        "warehouse store shopping carts",
+        "wholesale club checkout"
+      ]
+    },
+    {
+      "chapter": "The numbers",
+      "narration": "Let's look at the actual numbers from Costco's fiscal year twenty twenty-six, which ended in late August. Net sales came to two hundred and ninety-seven billion dollars. Membership fees brought in another five point nine billion. Next to the sales figure, that fee line looks like a rounding error, about two percent of total revenue.",
+      "chart": {
+        "type": "hbar",
+        "title": "Costco revenue, fiscal 2026",
+        "subtitle": "US dollars",
+        "labels": [
+          "Merchandise sales",
+          "Membership fees"
+        ],
+        "values": [
+          297.2,
+          5.9
+        ],
+        "decimals": 1,
+        "highlight": "Membership fees",
+        "source": "Costco FY2026 results (Sept 24, 2026)",
+        "prefix": "$",
+        "suffix": " billion"
+      },
+      "images": [
+        "commons:Costco warehouse aisle"
+      ],
+      "visuals": [
+        "supermarket checkout cashier",
+        "shopping receipt groceries"
+      ]
+    },
+    {
+      "narration": "But now compare it to profit instead of revenue. Costco's net income for the year was nine point two billion dollars. The membership fees alone were equal to roughly two thirds of that. And unlike a television or a bag of rice, a membership costs Costco almost nothing to deliver. There's no product to buy, ship or store. Nearly every dollar of fee income falls straight through to the bottom line.",
+      "chart": {
+        "type": "bar",
+        "title": "Fees vs. profit, fiscal 2026",
+        "subtitle": "US dollars",
+        "labels": [
+          "Membership fees",
+          "Net income"
+        ],
+        "values": [
+          5.9,
+          9.2
+        ],
+        "decimals": 1,
+        "highlight": "Membership fees",
+        "source": "Costco FY2026 results",
+        "prefix": "$",
+        "suffix": " billion"
+      },
+      "images": [
+        "commons:Costco checkout"
+      ],
+      "visuals": [
+        "wholesale store aisle",
+        "shopping cart groceries"
+      ],
+      "callouts": [
+        {
+          "at": "roughly two thirds",
+          "text": "≈64%",
+          "label": "Fees as a share of net income"
+        }
+      ]
+    },
+    {
+      "chapter": "Why the margin is so low on purpose",
+      "narration": "This explains one of the strangest things about Costco. Most retailers try to squeeze as much margin as they can out of every product. Costco does the opposite. It deliberately keeps its markups low, because its real customer relationship isn't the individual purchase. It's the yearly renewal. Every time you find a deal that feels almost too good, Costco is reinforcing one thought in your head: this membership pays for itself.",
+      "visuals": [
+        "price tags supermarket",
+        "bulk products shelves",
+        "customer comparing prices"
+      ],
+      "images": [
+        "supermarket price tag"
+      ]
+    },
+    {
+      "narration": "That's also why the store looks the way it does. Concrete floors, products stacked on pallets, a limited selection of a few thousand items instead of tens of thousands. All of it lowers costs, and every dollar saved goes into lower prices, not into extra margin. The warehouse is designed to make the value obvious the moment you walk in.",
+      "visuals": [
+        "pallets warehouse store",
+        "forklift warehouse",
+        "big box store interior"
+      ],
+      "images": [
+        "commons:Costco pallets merchandise"
+      ]
+    },
+    {
+      "chapter": "The renewal machine",
+      "narration": "A membership business lives or dies by one number: how many people renew. And Costco's renewal rate is remarkable. In the United States and Canada, ninety-two point three percent of members renewed. Worldwide it was almost ninety percent. For comparison, plenty of streaming services and gyms would be thrilled to keep members that long.",
+      "chart": {
+        "type": "hbar",
+        "title": "Costco membership renewal rate",
+        "subtitle": "End of fiscal 2026",
+        "labels": [
+          "US & Canada",
+          "Worldwide"
+        ],
+        "values": [
+          92.3,
+          89.8
+        ],
+        "decimals": 1,
+        "source": "Costco FY2026 results",
+        "suffix": "%"
+      },
+      "images": [
+        "commons:Costco entrance members"
+      ],
+      "visuals": [
+        "store entrance customers",
+        "membership card"
+      ]
+    },
+    {
+      "narration": "Costco ended the year with eighty-four point one million paid members, and more than a hundred and fifty million cardholders once you count the extra household cards. That's a base of recurring revenue that shows up year after year, almost regardless of what happens to the price of eggs or televisions.",
+      "chart": {
+        "type": "line",
+        "title": "Paid Costco members",
+        "subtitle": "End of each fiscal year",
+        "labels": [
+          "2024",
+          "2025",
+          "2026"
+        ],
+        "values": [
+          76.2,
+          81.0,
+          84.1
+        ],
+        "decimals": 1,
+        "source": "Costco 10-K, fiscal 2026",
+        "suffix": " million"
+      },
+      "images": [
+        "commons:Costco parking lot"
+      ],
+      "visuals": [
+        "shopping cart parking lot",
+        "supermarket customers"
+      ],
+      "callouts": [
+        {
+          "at": "more than a hundred and fifty",
+          "text": "150.4 million",
+          "label": "Total cardholders"
+        }
+      ]
+    },
+    {
+      "chapter": "What one member is worth",
+      "narration": "Here's a simple way to feel the size of it. Divide Costco's membership fees by its paid members, and the average member hands over roughly seventy dollars a year before buying a single thing. That's an average across cheaper international memberships and the pricier Executive ones. Now multiply it by eighty-four million people, and remember that about nine in ten of them come back next year without being asked. Most companies spend fortunes trying to buy that kind of loyalty. Costco gets paid for it.",
+      "visuals": [
+        "supermarket customers shopping",
+        "wholesale store aisle"
+      ],
+      "images": [
+        "commons:Costco members shopping"
+      ],
+      "chart": {
+        "type": "bar",
+        "title": "Average fee per paid member",
+        "subtitle": "Fiscal 2026, US dollars per year",
+        "labels": [
+          "Average fee per paid member"
+        ],
+        "values": [
+          70.2
+        ],
+        "decimals": 0,
+        "source": "Calculated from Costco FY2026 results",
+        "prefix": "$",
+        "suffix": " per year"
+      }
+    },
+    {
+      "chapter": "Executive members",
+      "narration": "Then there's the upgrade. An Executive membership costs twice as much as the basic one, and in return members get a reward on what they spend. Costco now has forty-two point three million Executive members, and according to analysts they account for roughly three quarters of all sales. The logic is clever: once you've paid extra for a reward on your spending, you have a reason to do more of your shopping at Costco to earn it back.",
+      "visuals": [
+        "checkout credit card payment",
+        "family shopping supermarket",
+        "shopping receipt"
+      ],
+      "images": [
+        "commons:Costco executive membership"
+      ],
+      "callouts": [
+        {
+          "at": "forty-two point three million",
+          "text": "42.3 million",
+          "label": "Executive members"
+        },
+        {
+          "at": "roughly three quarters",
+          "text": "≈75%",
+          "label": "Share of sales from Executive members"
+        }
+      ]
+    },
+    {
+      "chapter": "Raising the price without losing members",
+      "narration": "In September twenty twenty-four, Costco raised its basic US membership from sixty to sixty-five dollars. Raising prices is usually where subscription businesses lose people. Costco didn't. Renewal rates held steady, and fee income grew for months as the higher price rolled through each member's renewal date. Analysts noted that by the end of fiscal twenty twenty-six that boost had mostly worked its way through, and growth in fee income slowed to about seven percent in the final quarter. Which tells you something: Costco only raises its fee every several years, and when it does, members largely stay.",
+      "visuals": [
+        "membership card wallet",
+        "customers entering store",
+        "supermarket shoppers"
+      ],
+      "images": [
+        "commons:Costco Wholesale sign"
+      ],
+      "callouts": [
+        {
+          "at": "from sixty to sixty-five",
+          "text": "$60 → $65",
+          "label": "US basic membership, Sept 2024"
+        },
+        {
+          "at": "about seven percent",
+          "text": "+7.3%",
+          "label": "Fee income growth, Q4 FY2026"
+        }
+      ]
+    },
+    {
+      "chapter": "Kirkland and the hot dog",
+      "narration": "Two more pieces complete the machine. The first is Kirkland Signature, Costco's own brand. Because Costco controls the product, it can offer something comparable to a national brand at a noticeably lower price, while often keeping a slightly better margin for itself. Management said Kirkland products typically offer fifteen to twenty percent more value than the name brands. Shoppers get a better deal, and they get one more reason they can only find at Costco.",
+      "visuals": [
+        "private label products shelf",
+        "bulk food packaging",
+        "grocery store products"
+      ],
+      "images": [
+        "commons:Kirkland Signature products"
+      ],
+      "callouts": [
+        {
+          "at": "fifteen to twenty percent",
+          "text": "15–20%",
+          "label": "Kirkland value vs. national brands"
+        }
+      ]
+    },
+    {
+      "narration": "The second is the hot dog. The famous hot dog and soda combo has cost a dollar fifty since the nineteen eighties. Costco almost certainly doesn't get rich on it. That's the point. It's a promise, repeated millions of times a year, that this is a place that won't take advantage of you. You can't put a number on that in an earnings report, but it's the emotional glue behind a ninety-percent renewal rate.",
+      "visuals": [
+        "hot dog stand",
+        "food court customers",
+        "hot dog sausage"
+      ],
+      "images": [
+        "commons:Costco food court hot dog"
+      ],
+      "callouts": [
+        {
+          "at": "a dollar fifty",
+          "text": "$1.50",
+          "label": "Hot dog + soda, since the 1980s"
+        }
+      ]
+    },
+    {
+      "chapter": "The side businesses",
+      "narration": "Then there are the businesses around the warehouse: the gas stations, the pharmacy, the optical center, Costco Travel. On paper some of them make Costco look worse. Gasoline sells at very thin margins, and because fuel and online sales grew faster than everything else last year, Costco's reported gross margin actually dipped slightly, to around eleven percent. But that misses what they're for. Cheap gas brings members to the parking lot every week. The pharmacy grew sales by nearly twenty percent last fiscal year. And in the five days after Thanksgiving, Costco Travel in the US booked more than a hundred million dollars in trips. Every one of these is another reason the membership feels worth it, and another visit where you might walk out with a cart full of things you didn't plan to buy.",
+      "visuals": [
+        "gas station pumps",
+        "pharmacy counter",
+        "airplane travel"
+      ],
+      "images": [
+        "commons:Costco gas station"
+      ],
+      "callouts": [
+        {
+          "at": "nearly twenty percent",
+          "text": "≈20%",
+          "label": "Pharmacy sales growth, FY2026"
+        },
+        {
+          "at": "more than a hundred million",
+          "text": "$100M+",
+          "label": "Costco Travel bookings in 5 days"
+        }
+      ]
+    },
+    {
+      "chapter": "Growth by copy-paste",
+      "narration": "And because the model works the same way almost everywhere, Costco can grow by repeating it. It expected to finish fiscal twenty twenty-six with roughly nine hundred and forty warehouses around the world, and management has said it wants to open more than thirty new ones every year from here on. Each new warehouse is a fresh catchment area of people who haven't bought a card yet. Once they do, around nine out of ten of them will still be paying a year later.",
+      "visuals": [
+        "construction site building",
+        "aerial view shopping center",
+        "highway traffic suburbs"
+      ],
+      "images": [
+        "commons:Costco new warehouse construction"
+      ],
+      "callouts": [
+        {
+          "at": "roughly nine hundred and forty",
+          "text": "≈940",
+          "label": "Warehouses worldwide"
+        },
+        {
+          "at": "more than thirty new",
+          "text": "30+ per year",
+          "label": "Planned new warehouses"
+        }
+      ]
+    },
+    {
+      "chapter": "The flywheel",
+      "narration": "Put it all together and you get a flywheel. Low prices attract members. Members pay fees, which are almost pure profit. That profit lets Costco keep prices low, which attracts more members and gives it more buying power with suppliers, which lowers prices even further. Every turn of the wheel makes the next one easier.",
+      "visuals": [
+        "warehouse conveyor logistics",
+        "delivery trucks highway",
+        "distribution center warehouse"
+      ],
+      "images": [
+        "commons:Costco distribution center"
+      ]
+    },
+    {
+      "chapter": "Can it last?",
+      "narration": "Is it bulletproof? Not entirely. Paid membership growth has slowed for eight quarters in a row, down to under four percent. More members now sign up online, and those renew at slightly lower rates. And the boost from the last fee increase has faded. But the core idea is extremely hard to copy. To compete, a rival would have to accept thin margins for years while building a member base it hasn't earned yet. Most never get there.",
+      "visuals": [
+        "empty supermarket aisle",
+        "business meeting report",
+        "city skyline evening"
+      ],
+      "images": [
+        "commons:Costco Issaquah headquarters"
+      ],
+      "callouts": [
+        {
+          "at": "eight quarters in a row",
+          "text": "8 quarters",
+          "label": "Of slowing member growth"
+        },
+        {
+          "at": "under four percent",
+          "text": "+3.8%",
+          "label": "Paid member growth, Q4 FY2026"
+        }
+      ]
+    },
+    {
+      "narration": "So the next time you push a giant cart past a mountain of paper towels, remember: you're not really Costco's customer at the checkout. You became its customer the moment you renewed that card. If you want more breakdowns like this, of how familiar companies really make their money, subscribe, and let me know in the comments which company we should take apart next.",
+      "visuals": [
+        "shopping cart parking lot",
+        "store exterior evening"
+      ],
+      "images": [
+        "commons:Costco store at night"
+      ]
+    }
+  ],
+  "sources": [
+    "Costco Q4 and FY2026 operating results press release, Sept 24, 2026 (investor.costco.com)",
+    "Costco Form 10-K for fiscal 2026 (SEC EDGAR)",
+    "Costco Q1 and Q4 FY2026 earnings calls",
+    "Zacks / Nasdaq: \"Costco's Best Numbers Came With an Asterisk\", Sept 2026",
+    "Costco Q3 FY2026 results and earnings call, May 28, 2026"
+  ],
+  "fallback_images": [
+    "commons:Costco warehouse interior",
+    "commons:Costco store aisle",
+    "commons:Costco Wholesale exterior",
+    "commons:Costco shoppers",
+    "commons:Kirkland Signature",
+    "commons:Costco food court",
+    "commons:Costco gas station",
+    "commons:Costco parking lot",
+    "commons:Costco checkout"
+  ]
+}

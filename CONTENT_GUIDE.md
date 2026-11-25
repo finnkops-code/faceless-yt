@@ -75,6 +75,8 @@ No sensational or misleading titles, no distressing content, no fake people or t
   Max 3 callouts per section; don't put a callout on a section that already shows the same number in a chart.
 - **Charts show full values:** always set `prefix`/`suffix` so labels read "$5.9 billion", never "$5.9".
   Keep labels short (≤ 28 characters). 2–6 data points per chart.
+- **Put the subject first in every visual query** ("gas station pumps", "hot dog stand", "checkout cashier"):
+  the first two words must appear in the clip's tags or the clip is rejected.
 - **Footage must match what is being said in that sentence.** Write literal, filmable queries tied to the
   topic (e.g. "airplane cabin passengers", "supermarket checkout cashier"). Never generic finance filler
   ("money counting", "stock market screen", "trading chart") — those return crypto/bitcoin footage.

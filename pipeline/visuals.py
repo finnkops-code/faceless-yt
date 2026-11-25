@@ -49,13 +49,26 @@ def relevance(query, meta_text):
     return len(keys & m)
 
 
+def _head(query):
+    import re
+    stop = {w.rstrip("s") for w in STOP}
+    return [w.rstrip("s") for w in re.findall(r"[a-z0-9]+", query.lower()) if len(w) > 2 and w.rstrip("s") not in stop][:2]
+
+
 def _rank(query, cands):
-    """Strict: an asset must share >= 2 meaningful words with the query (1 if the query only has 1)."""
-    keys = _words(query) - {w.rstrip("s") for w in STOP}
-    need = 1 if len(keys) <= 1 else 2
-    scored = [(relevance(query, c[-1]), c) for c in cands]
-    good = sorted([x for x in scored if x[0] >= need], key=lambda x: -x[0])
-    return [c[:-1] for _, c in good]
+    """Strict: the query's two head words (the subject, e.g. 'gas station', 'hot dog') must both be in
+    the asset's tags, or the asset must share >= 3 words with the query."""
+    head = _head(query)
+    out = []
+    for c in cands:
+        sc = relevance(query, c[-1])
+        if sc < 0:
+            continue
+        m = _words(c[-1])
+        if all(h in m for h in head) or sc >= 3:
+            out.append((sc, c))
+    out.sort(key=lambda x: -x[0])
+    return [c[:-1] for _, c in out]
 
 
 def _get_json(url, headers=None):
