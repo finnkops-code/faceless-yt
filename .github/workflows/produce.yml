@@ -65,9 +65,16 @@ jobs:
           for d in output/*/; do
             slug=$(basename "$d")
             [ -f "$d/video.mp4" ] || continue
+            extra=()
+            for s in "$d"short_*/; do
+              [ -f "$s/video.mp4" ] || continue
+              n=$(basename "$s")
+              cp "$s/video.mp4" "$d/$n.mp4"; cp "$s/metadata.json" "$d/$n.json"; cp "$s/captions.srt" "$d/$n.srt"
+              extra+=("$d/$n.mp4" "$d/$n.json" "$d/$n.srt")
+            done
             gh release create "video-$slug" "$d/video.mp4" "$d/thumbnail.jpg" \
-              "$d/metadata.json" "$d/captions.srt" \
-              --title "$slug" --notes "Ready for upload" || true
+              "$d/metadata.json" "$d/captions.srt" "${extra[@]}" \
+              --title "$slug" --notes "Long video + captions + Shorts (short_N.*). Ready for upload" || true
           done
 
       - name: Stats snapshot

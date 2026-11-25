@@ -51,7 +51,15 @@ No sensational or misleading titles, no distressing content, no fake people or t
     {"title_card": "short big statement", "kicker": "small label", "narration": "..."}
   ],
   "fallback_images": ["commons:<Company> store interior", "commons:<Company> headquarters", "... 6–10 queries"],
-  "sources": ["full source names"]
+  "sources": ["full source names"],
+  "shorts": [
+    {"title": "≤ 60 chars, one surprising fact (#Shorts is added automatically)",
+     "headline": "≤ 8 words shown at the top of the frame",
+     "narration": "70–120 words, standalone, first sentence is the hook",
+     "visuals": ["subject-first stock query", "..."], "images": ["commons:<Company> ..."],
+     "callouts": [{"at": "exact words", "text": "$4.8 billion", "label": "membership fees per year"}],
+     "chart": {"optional, same schema as above, plus \"at\": \"exact words\""}}
+  ]
 }
 ```
 - Total narration **1,350–1,700 words** (≈ 8.5–11 min). Videos under 8:00 get no mid-roll ads.
@@ -88,7 +96,21 @@ No sensational or misleading titles, no distressing content, no fake people or t
   make the video feel specific instead of stock.
 - Use `title_card` max 2× per video (hook statement + one key insight). Chapters get an automatic
   numbered label; first section is the cold-open hook, then the Hidden Ledger ident plays automatically.
-- No word-by-word burned captions (subtitles go up as a separate SRT track).
+- No word-by-word burned captions in long-form (subtitles go up as a separate SRT track).
+
+## Shorts (every video: 3, max 3)
+- Each Short is a standalone 30–50 s story built on ONE striking number or twist from the long video.
+  Never a trailer ("watch the full video to find out") — it must pay off on its own; the closing card
+  pointing to the full breakdown is added automatically.
+- Hook in the first sentence, no intro, no greeting. End on the payoff line.
+- Same rules as long-form: every spoken number gets a callout or the chart, subject-first visual
+  queries, `commons:` photos of the real company. 3–5 visual/image queries per Short.
+- Rendered vertically (1080×1920) with big burned-in captions (Shorts are mostly watched muted).
+- They publish one per day after the long video and link to it.
+
+## Subtitles
+Every long video and Short gets a clean English SRT (2 lines, ≤ 42 chars) uploaded as a caption
+track — long-form has no burned-in captions, Shorts do.
 
 ## Cadence
 2 videos per week (Mon + Thu publish). Quality over volume.

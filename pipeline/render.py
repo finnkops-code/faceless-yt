@@ -52,6 +52,41 @@ def caption_chunks(words, offset):
     return out
 
 
+def srt_cues(words, offset, max_chars=84, max_dur=6.0):
+    """Readable subtitles: up to 2 lines of ~42 chars, broken at sentence/clause ends."""
+    out, cur = [], []
+    def flush():
+        if cur:
+            txt = " ".join(w for _, _, w in cur)
+            out.append((offset + cur[0][0], offset + cur[-1][1] + 0.1, _two_lines(txt)))
+            cur.clear()
+    for s_, e_, w in words:
+        if cur and (len(" ".join(x for _, _, x in cur)) + len(w) + 1 > max_chars or e_ - cur[0][0] > max_dur):
+            flush()
+        cur.append((s_, e_, w))
+        if re.search(r"[.!?]$", w) or (re.search(r"[,;:]$", w) and len(" ".join(x for _, _, x in cur)) > 40):
+            flush()
+    flush()
+    return out
+
+
+def _two_lines(txt, width=42):
+    if len(txt) <= width:
+        return txt
+    mid = len(txt) // 2
+    cut = min((i for i, c in enumerate(txt) if c == " "), key=lambda i: abs(i - mid), default=mid)
+    return txt[:cut] + "\n" + txt[cut + 1:]
+
+
+def write_srt(cues, path: Path):
+    lines = []
+    for n, (s_, e_, txt) in enumerate(cues):
+        if n + 1 < len(cues):
+            e_ = min(e_, cues[n + 1][0] - 0.02)
+        lines.append(f"{n + 1}\n{_srt(s_)} --> {_srt(e_)}\n{txt}\n")
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def write_ass(cues, path: Path):
     head = """[Script Info]
 ScriptType: v4.00+
@@ -96,9 +131,9 @@ def _shots(sec, n, work, used, credits, slug, i):
     return pool
 
 
-def _render_shot(kind, src, dest, dur, rnd, key, reuse=False):
+def _render_shot(kind, src, dest, dur, rnd, key, reuse=False, size=(visuals.W, visuals.H)):
     if kind == "img":
-        visuals.ken_burns(src, dest, dur, key)
+        visuals.ken_burns(src, dest, dur, key, size=size)
         return
     length = visuals.probe(src)
     start = rnd.uniform(0, max(0, length - dur - 0.5)) if reuse and length > dur + 1 else 0.0
@@ -107,7 +142,7 @@ def _render_shot(kind, src, dest, dur, rnd, key, reuse=False):
         ff("-i", src, "-an", "-vf", f"setpts={dur / length + 0.05:.3f}*PTS", "-c:v", "libx264",
            "-preset", "veryfast", tmp)
         src = tmp
-    visuals.normalize_clip(src, dest, dur, start)
+    visuals.normalize_clip(src, dest, dur, start, size=size)
 
 
 def overlay_seq(bg_clip, frames_dir, dest, duration):
@@ -233,6 +268,7 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
     work.mkdir(parents=True, exist_ok=True)
     voice = spec.get("voice", tts.DEFAULT_VOICE)
     used, clips, audio_parts, cues, chapters, credits = set(), [], [], [], [], []
+    subs = []
     t = 0.0
     rnd = random.Random(slug)
 
@@ -248,6 +284,7 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
         ff("-i", mp3, "-af", f"apad=pad_dur={PAUSE}", "-ar", "48000", "-ac", "2", wav)
         audio_parts.append(wav)
         cues += caption_chunks(words, t)
+        subs += srt_cues(words, t)
         if sec.get("chapter"):
             chapters.append((t, sec["chapter"]))
             chapter_no += 1
@@ -280,9 +317,7 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
 
     ass = out / "captions.ass"
     write_ass(cues, ass)
-    srt = out / "captions.srt"
-    srt.write_text("".join(
-        f"{n + 1}\n{_srt(s)} --> {_srt(e)}\n{txt}\n\n" for n, (s, e, txt) in enumerate(cues)))
+    write_srt(subs, out / "captions.srt")
 
     from .music import pick_track
     track, music_credit = pick_track(slug)
@@ -325,6 +360,14 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
         "duration": round(t, 1),
     }
     (out / "metadata.json").write_text(json.dumps(meta, indent=2))
+
+    # --- vertical Shorts (max 3); a failing short never blocks the long video
+    from .shorts import build_short
+    for k, sh in enumerate(spec.get("shorts", [])[:3]):
+        try:
+            build_short(sh, k, spec, out, credits, track)
+        except Exception as e:
+            print(f"[{slug}] short {k + 1} failed: {e}")
     print(f"[{slug}] done → {final} ({t / 60:.1f} min)")
     return out
 

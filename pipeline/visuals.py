@@ -165,8 +165,9 @@ def fetch_broll(queries, cache: Path, used: set, need: int):
     return clips
 
 
-def normalize_clip(src: Path, dest: Path, duration: float, start: float = 0.0):
-    vf = (f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},"
+def normalize_clip(src: Path, dest: Path, duration: float, start: float = 0.0, size=(W, H)):
+    w, h = size
+    vf = (f"scale={w}:{h}:force_original_aspect_ratio=increase,crop={w}:{h},"
           f"fps={FPS},setsar=1,{HOUSE_GRADE}")
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{start:.2f}", "-i", str(src),
                     "-t", f"{duration:.3f}", "-an", "-vf", vf, "-c:v", "libx264",
@@ -402,7 +403,7 @@ def fetch_photos(queries, cache: Path, used: set, need: int, credits: list):
     return out
 
 
-def ken_burns(img: Path, dest: Path, duration: float, seed: str):
+def ken_burns(img: Path, dest: Path, duration: float, seed: str, size=(W, H)):
     """Slow zoom/pan over a still photo."""
     rnd = random.Random(seed)
     frames = max(1, int(duration * FPS))
@@ -414,8 +415,9 @@ def ken_burns(img: Path, dest: Path, duration: float, seed: str):
         x = f"(iw-iw/zoom)*on/{frames}"
     else:
         x = "iw/2-(iw/zoom/2)"
-    vf = (f"scale={W*2}:{H*2}:force_original_aspect_ratio=increase,crop={W*2}:{H*2},"
-          f"zoompan=z='{z}':x='{x}':y='ih/2-(ih/zoom/2)':d={frames}:s={W}x{H}:fps={FPS},"
+    w, h = size
+    vf = (f"scale={w*2}:{h*2}:force_original_aspect_ratio=increase,crop={w*2}:{h*2},"
+          f"zoompan=z='{z}':x='{x}':y='ih/2-(ih/zoom/2)':d={frames}:s={w}x{h}:fps={FPS},"
           f"setsar=1,{HOUSE_GRADE}")
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(img), "-t", f"{duration:.3f}",
                     "-vf", vf, "-c:v", "libx264", "-preset", "veryfast", "-crf", "19",

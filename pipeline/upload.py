@@ -16,6 +16,9 @@ from googleapiclient.http import MediaFileUpload
 
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload",
           "https://www.googleapis.com/auth/youtube.readonly"]
+# captions.insert additionally needs youtube.force-ssl. Re-run get_token.py once to grant it;
+# until then captions are skipped (the SRT is still in the release for manual upload).
+CAPTION_SCOPE = "https://www.googleapis.com/auth/youtube.force-ssl"
 
 
 def client():
@@ -33,10 +36,22 @@ def next_slot(hour_utc=15):
     return slot.isoformat().replace("+00:00", "Z")
 
 
-def upload(out_dir: Path):
-    meta = json.loads((out_dir / "metadata.json").read_text())
+def add_captions(yt, vid, srt: Path):
+    if not srt.exists():
+        return
+    try:
+        yt.captions().insert(part="snippet", body={"snippet": {
+            "videoId": vid, "language": "en", "name": "English", "isDraft": False}},
+            media_body=MediaFileUpload(str(srt), mimetype="application/octet-stream")).execute()
+        print("  captions uploaded")
+    except Exception as e:
+        print(f"  captions skipped (token lacks youtube.force-ssl?): {e}")
+
+
+def upload(out_dir: Path, meta=None, publish_at=None, shorts=True):
+    meta = meta or json.loads((out_dir / "metadata.json").read_text())
     yt = client()
-    publish_at = meta.get("publish_at") or next_slot()
+    publish_at = publish_at or meta.get("publish_at") or next_slot()
     body = {
         "snippet": {"title": meta["title"], "description": meta["description"],
                     "tags": meta["tags"], "categoryId": meta["category_id"],
@@ -61,7 +76,19 @@ def upload(out_dir: Path):
             yt.thumbnails().set(videoId=vid, media_body=MediaFileUpload(str(thumb))).execute()
         except Exception as e:  # requires a phone-verified channel
             print(f"  thumbnail not set: {e}")
-    (out_dir / "youtube.json").write_text(json.dumps({"id": vid, "publish_at": publish_at}))
+    add_captions(yt, vid, out_dir / "captions.srt")
+    rec = {"id": vid, "publish_at": publish_at, "shorts": []}
+    if shorts:
+        # Shorts go out one per day after the long video, each linking back to it.
+        base = datetime.fromisoformat(publish_at.replace("Z", "+00:00"))
+        for k, sdir in enumerate(sorted(out_dir.glob("short_*"))):
+            if not (sdir / "video.mp4").exists():
+                continue
+            sm = json.loads((sdir / "metadata.json").read_text())
+            sm["description"] = sm["description"].replace("{LONG_URL}", f"https://youtu.be/{vid}")
+            when = (base + timedelta(days=k + 1, hours=-2)).isoformat().replace("+00:00", "Z")
+            rec["shorts"].append(upload(sdir, meta=sm, publish_at=when, shorts=False))
+    (out_dir / "youtube.json").write_text(json.dumps(rec))
     return vid
 
 
