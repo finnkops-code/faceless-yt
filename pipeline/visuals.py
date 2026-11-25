@@ -61,6 +61,8 @@ def _pixabay(query, n=6):
     data = _get_json(f"https://pixabay.com/api/videos/?key={key}&q={q}&per_page={max(n, 3)}")
     out = []
     for h in data.get("hits", []):
+        if h.get("type") and h["type"] != "film":   # skip animations / 3D renders
+            continue
         vid = h["videos"].get("large") or h["videos"].get("medium")
         if vid and vid.get("url"):
             out.append((f"pixabay-{h['id']}", vid["url"]))
@@ -307,7 +309,7 @@ def _pixabay_photos(query, n=8):
     if not key:
         return []
     q = urllib.parse.quote(query)
-    data = _get_json(f"https://pixabay.com/api/?key={key}&q={q}&image_type=photo"
+    data = _get_json(f"https://pixabay.com/api/?key={key}&q={q}&image_type=photo&editors_choice=false"
                      f"&orientation=horizontal&min_width=1600&safesearch=true&per_page={max(n, 3)}")
     return [(f"pixabayimg-{h['id']}", h.get("largeImageURL") or h["webformatURL"], None)
             for h in data.get("hits", [])]
