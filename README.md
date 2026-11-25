@@ -1,4 +1,6 @@
-# faceless-yt
+# faceless-yt — Hidden Ledger Uploader
+
+**[Privacy Policy](PRIVACY.md) · [Terms of Service](TERMS.md)** — This tool uses **YouTube API Services** ([YouTube Terms of Service](https://www.youtube.com/t/terms), [Google Privacy Policy](https://policies.google.com/privacy)). Private single-channel tool for the YouTube channel *Hidden Ledger*; no other users.
 
 Automated long-form explainer channel: script → voice → b-roll + charts → captions → thumbnail → YouTube.
 
