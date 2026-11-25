@@ -31,6 +31,8 @@ def main():
                            "duration": v["contentDetails"]["duration"],
                            **{k2: int(x) for k2, x in v["statistics"].items()}})
     analytics = _analytics(videos)
+    status = "error" if analytics is None else ("ok" if analytics else "no_data_yet")
+    analytics = analytics or {}
     for v in videos:
         v.update(analytics.get(v["id"], {}))
         v["is_short"] = _secs(v["duration"]) <= 60
@@ -40,7 +42,7 @@ def main():
         if v.get("views"):
             v["subs_per_1k_views"] = round(1000 * v.get("subscribersGained", 0) / v["views"], 2)
     snap = {"taken": datetime.now(timezone.utc).isoformat(), "channel": ch["statistics"],
-            "analytics_available": bool(analytics), "videos": videos}
+            "analytics_status": status, "videos": videos}
     _scoreboard(snap)
     (ROOT / "data").mkdir(exist_ok=True)
     (ROOT / "data" / "stats.json").write_text(json.dumps(snap, indent=2))
@@ -70,7 +72,7 @@ def _analytics(videos):
         return {row[0]: dict(zip(cols[1:], row[1:])) for row in r.get("rows", [])}
     except Exception as e:
         print(f"analytics unavailable: {e}")
-        return {}
+        return None
 
 
 def _scoreboard(snap):
@@ -79,9 +81,10 @@ def _scoreboard(snap):
     lines = ["# Growth scoreboard (auto-generated)", f"Taken: {snap['taken'][:16]} UTC", "",
              f"**Subscribers:** {ch.get('subscriberCount')}  |  **Total views:** {ch.get('viewCount')}  |  "
              f"**Videos:** {ch.get('videoCount')}", ""]
-    if not snap["analytics_available"]:
-        lines += ["_Watch time / retention / subs-per-video not available yet "
-                  "(token needs yt-analytics.readonly)._", ""]
+    if snap["analytics_status"] == "error":
+        lines += ["_Analytics API error — see data/stats_error.txt or the Actions log._", ""]
+    elif snap["analytics_status"] == "no_data_yet":
+        lines += ["_Analytics connected; YouTube reports watch time/subscribers with a 1–2 day delay._", ""]
     for kind, short in (("Long-form", False), ("Shorts", True)):
         vs = sorted([v for v in snap["videos"] if v["is_short"] == short],
                     key=lambda v: -v.get("views_per_day", 0))
