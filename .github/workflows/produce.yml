@@ -2,7 +2,7 @@ name: produce
 on:
   push:
     branches: [main]
-    paths: ["content/queue/**", "trigger/**"]
+    paths: ["content/queue/**", "trigger/**", "content/localize/*.json"]
   schedule:
     - cron: "17 6 * * *"     # daily safety net + stats snapshot
   workflow_dispatch:
@@ -93,6 +93,11 @@ jobs:
               sleep 20
             done
           done
+
+      - name: Apply translated titles/descriptions
+        if: env.YT_REFRESH_TOKEN != ''
+        continue-on-error: true
+        run: python -m pipeline.localize
 
       - name: Stats snapshot
         if: env.YT_REFRESH_TOKEN != ''

@@ -159,6 +159,12 @@ No sensational or misleading titles, no distressing content, no fake people or t
 Every long video and Short gets a clean English SRT (2 lines, ≤ 42 chars) uploaded as a caption
 track — long-form has no burned-in captions, Shorts do.
 
+## Translations (every video + its Shorts)
+After the video is published (its YouTube ID is in data/<slug>.youtube.json or given by Finn), write
+content/localize/<videoId>.json with translated title + 2–3 sentence summary in es, pt, de and hi
+(natural, not literal; keep numbers exactly; end the summary with "(Video in English, with subtitles.)"
+in that language). The workflow applies them automatically; viewers in those languages see their own.
+
 ## Automatic visual QA
 Every downloaded stock clip/photo is checked with an open-source CLIP model: if it looks more like an
 off-topic concept (dog, lake, cartoon, crypto chart, empty shelves, landscape...) than like its query,
