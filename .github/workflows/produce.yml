@@ -73,8 +73,11 @@ jobs:
               extra+=("$d/$n.mp4" "$d/$n.json" "$d/$n.srt")
             done
             [ ${#extra[@]} -gt 0 ] || continue
-            gh release view "video-$slug" >/dev/null 2>&1 || \
-              gh release create "video-$slug" --title "$slug" --notes "Long video + captions + Shorts (short_N.*) + thumbnails A/B/C. Ready for upload" || true
+            for try in 1 2 3 4 5; do
+              gh release view "video-$slug" >/dev/null 2>&1 && break
+              gh release create "video-$slug" --title "$slug" --notes "Long video + captions + Shorts (short_N.*) + thumbnails A/B/C. Ready for upload" && break
+              sleep 15
+            done
             for try in 1 2 3; do
               gh release upload "video-$slug" "${extra[@]}" --clobber && break
               sleep 20
