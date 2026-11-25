@@ -16,6 +16,6 @@ data/stats.json  ◄── daily stats snapshot ── feeds topic choice next r
 
 Local test: `pip install -r requirements.txt && python -m pipeline.render content/queue/<file>.json`
 
-Secrets: `PEXELS_API_KEY` (required), `PIXABAY_API_KEY` (optional), `YT_CLIENT_ID`, `YT_CLIENT_SECRET`, `YT_REFRESH_TOKEN`.
+Secrets: `PIXABAY_API_KEY` and/or `PEXELS_API_KEY` (at least one), `YT_CLIENT_ID`, `YT_CLIENT_SECRET`, `YT_REFRESH_TOKEN`.
 Variables: `UPLOAD_MODE` (`release` default, `api` after audit), `MAX_PER_RUN` (default 1).
 Optional: drop royalty-free `.mp3` tracks in `assets/music/` (e.g. YouTube Audio Library) for background music.

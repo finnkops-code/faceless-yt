@@ -302,6 +302,17 @@ def _pexels_photos(query, n=8):
     return [(f"pexelsimg-{p['id']}", p["src"]["large2x"], None) for p in data.get("photos", [])]
 
 
+def _pixabay_photos(query, n=8):
+    key = os.environ.get("PIXABAY_API_KEY")
+    if not key:
+        return []
+    q = urllib.parse.quote(query)
+    data = _get_json(f"https://pixabay.com/api/?key={key}&q={q}&image_type=photo"
+                     f"&orientation=horizontal&min_width=1600&safesearch=true&per_page={max(n, 3)}")
+    return [(f"pixabayimg-{h['id']}", h.get("largeImageURL") or h["webformatURL"], None)
+            for h in data.get("hits", [])]
+
+
 def fetch_photos(queries, cache: Path, used: set, need: int, credits: list):
     """Queries prefixed 'commons:' search Wikimedia Commons (real places/products/people-free);
     others search Pexels photos. Returns list of image paths; appends attributions to credits."""
@@ -313,7 +324,7 @@ def fetch_photos(queries, cache: Path, used: set, need: int, credits: list):
         src = "commons" if q.lower().startswith("commons:") else "pexels"
         term = q.split(":", 1)[1].strip() if src == "commons" else q
         try:
-            cands = _commons(term) if src == "commons" else _pexels_photos(term)
+            cands = _commons(term) if src == "commons" else (_pexels_photos(term) or _pixabay_photos(term))
         except Exception as e:
             print(f"  photo search failed '{q}': {e}")
             continue
