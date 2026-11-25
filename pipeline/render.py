@@ -57,7 +57,8 @@ def srt_cues(words, offset, max_chars=84, max_dur=6.0):
     out, cur = [], []
     def flush():
         if cur:
-            txt = " ".join(w for _, _, w in cur)
+            from .numfmt import digits
+            txt = digits(" ".join(w for _, _, w in cur))
             out.append((offset + cur[0][0], offset + cur[-1][1] + 0.1, _two_lines(txt)))
             cur.clear()
     for s_, e_, w in words:
