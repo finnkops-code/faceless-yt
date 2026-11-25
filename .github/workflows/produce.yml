@@ -26,6 +26,8 @@ jobs:
       YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
       UPLOAD_MODE: ${{ vars.UPLOAD_MODE || 'release' }}
       MAX_PER_RUN: ${{ vars.MAX_PER_RUN || '1' }}
+      TTS_ENGINE: ${{ vars.TTS_ENGINE || 'kokoro' }}
+      TTS_VOICE: ${{ vars.TTS_VOICE || 'bm_fable' }}
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
@@ -33,6 +35,17 @@ jobs:
         with: { python-version: "3.12" }
       - run: sudo apt-get update -q && sudo apt-get install -y -q ffmpeg
       - run: pip install -q -r requirements.txt
+      - name: Cache voice model
+        uses: actions/cache@v4
+        with:
+          path: models
+          key: kokoro-v1.0
+      - name: Download Kokoro voice model (first run only)
+        run: |
+          mkdir -p models
+          for f in kokoro-v1.0.onnx voices-v1.0.bin; do
+            [ -f models/$f ] || curl -sL -o models/$f https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/$f
+          done
 
       - name: Render (and upload when UPLOAD_MODE=api)
         id: render

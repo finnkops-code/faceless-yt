@@ -16,7 +16,8 @@ from .thumbnail import make_thumbnail
 ROOT = Path(__file__).resolve().parent.parent
 FONTS = ROOT / "assets" / "fonts"
 PAUSE = 0.35          # silence after each section
-CLIP_LEN = 5.0        # target seconds per b-roll shot
+SHOT = 4.0            # target seconds per shot (keeps it moving)
+GRAPHIC_MIN = 6.5     # seconds a chart/card stays on screen
 
 
 def ff(*args):
@@ -74,6 +75,72 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
     path.write_text(head + "\n".join(lines) + "\n", encoding="utf-8")
 
 
+def _shots(sec, n, work, used, credits, slug, i):
+    """Footage pool for a section: stock video + photos, interleaved."""
+    vids = visuals.fetch_broll(sec.get("visuals", []), ROOT / "cache", used, n)
+    imgs = visuals.fetch_photos(sec.get("images", []), ROOT / "cache", used,
+                                max(1, n // 2) if sec.get("images") else 0, credits)
+    pool = []
+    for k in range(max(len(vids), len(imgs))):
+        if k < len(imgs):
+            pool.append(("img", imgs[k]))
+        if k < len(vids):
+            pool.append(("vid", vids[k]))
+    return pool
+
+
+def _render_shot(kind, src, dest, dur, rnd, key, reuse=False):
+    if kind == "img":
+        visuals.ken_burns(src, dest, dur, key)
+        return
+    length = visuals.probe(src)
+    start = rnd.uniform(0, max(0, length - dur - 0.5)) if reuse and length > dur + 1 else 0.0
+    if length and length < dur:
+        tmp = dest.with_name("slow_" + dest.name)
+        ff("-i", src, "-an", "-vf", f"setpts={dur / length + 0.05:.3f}*PTS", "-c:v", "libx264",
+           "-preset", "veryfast", tmp)
+        src = tmp
+    visuals.normalize_clip(src, dest, dur, start)
+
+
+def section_visuals(sec, i, seg, work, used, credits, slug):
+    """Always moving imagery. Charts/cards are overlaid on blurred footage, never on a flat screen."""
+    rnd = random.Random(f"{slug}{i}")
+    graphic = None
+    if sec.get("chart"):
+        graphic = work / f"chart{i:02d}.png"
+        visuals.render_chart(sec["chart"], graphic)
+    elif sec.get("title_card"):
+        graphic = work / f"card{i:02d}.png"
+        visuals.render_title_card(sec["title_card"], graphic, sec.get("kicker", ""))
+
+    g_dur = min(seg, max(GRAPHIC_MIN, seg * 0.6)) if graphic else 0
+    lead = seg - g_dur                       # footage before the graphic appears
+    n = max(1, math.ceil(lead / SHOT)) if lead > 1.5 else 0
+    if lead and n == 0:                      # too short for a separate shot → graphic gets it all
+        g_dur, lead = seg, 0
+    pool = _shots(sec, n + (1 if graphic else 0), work, used, credits, slug, i)
+    if not pool:                             # nothing found → abstract background
+        png = work / f"bg{i:02d}.png"
+        visuals.fallback_background(png, f"{slug}{i}")
+        pool = [("img", png)]
+
+    out = []
+    for k in range(n):
+        kind, src = pool[k % len(pool)]
+        c = work / f"v{i:02d}_{k}.mp4"
+        _render_shot(kind, src, c, lead / n, rnd, f"{slug}{i}{k}", reuse=k >= len(pool))
+        out.append(c)
+    if graphic:
+        kind, src = pool[n % len(pool)]
+        bg = work / f"g{i:02d}_bg.mp4"
+        _render_shot(kind, src, bg, g_dur, rnd, f"{slug}{i}g", reuse=n >= len(pool))
+        c = work / f"v{i:02d}_g.mp4"
+        visuals.overlay_on(bg, graphic, c, g_dur)
+        out.append(c)
+    return out
+
+
 def build(script_path: Path, out_root: Path = ROOT / "output"):
     spec = json.loads(Path(script_path).read_text())
     slug = spec["slug"]
@@ -81,7 +148,7 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
     work = out / "work"
     work.mkdir(parents=True, exist_ok=True)
     voice = spec.get("voice", tts.DEFAULT_VOICE)
-    used, clips, audio_parts, cues, chapters = set(), [], [], [], []
+    used, clips, audio_parts, cues, chapters, credits = set(), [], [], [], [], []
     t = 0.0
     rnd = random.Random(slug)
 
@@ -97,46 +164,7 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
         if sec.get("chapter"):
             chapters.append((t, sec["chapter"]))
 
-        if sec.get("chart"):
-            png = work / f"chart{i:02d}.png"
-            visuals.render_chart(sec["chart"], png)
-            c = work / f"v{i:02d}_0.mp4"
-            visuals.still_to_clip(png, c, seg)
-            clips.append(c)
-        elif sec.get("title_card"):
-            png = work / f"card{i:02d}.png"
-            visuals.render_title_card(sec["title_card"], png, sec.get("kicker", ""))
-            c = work / f"v{i:02d}_0.mp4"
-            visuals.still_to_clip(png, c, seg)
-            clips.append(c)
-        else:
-            n = max(1, math.ceil(seg / CLIP_LEN))
-            src = visuals.fetch_broll(sec.get("visuals", []), ROOT / "cache", used, n)
-            if not src:
-                png = work / f"bg{i:02d}.png"
-                visuals.fallback_background(png, f"{slug}{i}")
-                c = work / f"v{i:02d}_0.mp4"
-                visuals.still_to_clip(png, c, seg)
-                clips.append(c)
-            else:
-                shot = seg / n
-                for k in range(n):
-                    s = src[k % len(src)]
-                    length = visuals.probe(s)
-                    start = 0.0
-                    if k >= len(src) and length > shot + 1:  # reuse → different part
-                        start = rnd.uniform(0, length - shot - 0.5)
-                    elif length < shot:
-                        start = 0.0
-                    c = work / f"v{i:02d}_{k}.mp4"
-                    if length and length < shot:  # too short → slow it down to fill
-                        tmp = work / f"slow{i:02d}_{k}.mp4"
-                        factor = shot / length + 0.05
-                        ff("-i", s, "-an", "-vf", f"setpts={factor:.3f}*PTS", "-c:v", "libx264",
-                           "-preset", "veryfast", tmp)
-                        s = tmp
-                    visuals.normalize_clip(s, c, shot, start)
-                    clips.append(c)
+        clips += section_visuals(sec, i, seg, work, used, credits, slug)
         t += seg
 
     # --- concat video
@@ -181,6 +209,8 @@ def build(script_path: Path, out_root: Path = ROOT / "output"):
     desc = spec["description"].strip()
     if len(chapters) >= 3 and chapters[0][0] == 0:
         desc += "\n\nChapters\n" + "\n".join(f"{ts(s)} {name}" for s, name in chapters)
+    if credits:
+        desc += "\n\nImage credits\n" + "\n".join(f"- {c}" for c in dict.fromkeys(credits))
     if spec.get("sources"):
         desc += "\n\nSources\n" + "\n".join(f"- {s}" for s in spec["sources"])
     desc += "\n\nNarration uses a synthetic voice. Research, script and data visuals are produced for this channel."

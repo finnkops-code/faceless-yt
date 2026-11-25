@@ -1,49 +1,37 @@
 """Text-to-speech with word timings.
 
-Primary: Microsoft Edge neural voices via `edge-tts` (free, no key).
-Fallback: espeak-ng (robotic, only for offline testing) with estimated timings.
+Engines (in order):
+  kokoro — Kokoro-82M (Apache-2.0, open source, runs on CPU). Natural, documentary-style voice.
+  edge   — Microsoft Edge neural voices via edge-tts (free, needs network).
+  espeak — robotic, offline test fallback only.
+Pick with env TTS_ENGINE (default: kokoro).
 """
 import asyncio
+import os
+import re
 import shutil
 import subprocess
 from pathlib import Path
 
-DEFAULT_VOICE = "en-US-AndrewMultilingualNeural"
+ROOT = Path(__file__).resolve().parent.parent
+MODELS = Path(os.environ.get("KOKORO_DIR", ROOT / "models"))
+DEFAULT_VOICE = os.environ.get("TTS_VOICE", "bm_fable")
+SENTENCE_GAP = 0.14
+_kokoro = None
 
 
 def _probe_duration(path: Path) -> float:
-    out = subprocess.run(
-        ["ffprobe", "-v", "error", "-show_entries", "format=duration",
-         "-of", "default=nw=1:nk=1", str(path)],
-        capture_output=True, text=True, check=True)
+    out = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                          "-of", "default=nw=1:nk=1", str(path)],
+                         capture_output=True, text=True, check=True)
     return float(out.stdout.strip())
 
 
-async def _edge(text: str, voice: str, rate: str, out_mp3: Path):
-    import edge_tts
-    words = []
-    comm = edge_tts.Communicate(text, voice, rate=rate, boundary="WordBoundary")
-    with open(out_mp3, "wb") as f:
-        async for chunk in comm.stream():
-            if chunk["type"] == "audio":
-                f.write(chunk["data"])
-            elif chunk["type"] == "WordBoundary":
-                start = chunk["offset"] / 1e7
-                words.append((start, start + chunk["duration"] / 1e7, chunk["text"]))
-    return words
-
-
-def _espeak(text: str, out_mp3: Path):
-    wav = out_mp3.with_suffix(".wav")
-    subprocess.run(["espeak-ng", "-v", "en-us", "-s", "165", "-w", str(wav), text], check=True)
-    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav), "-ar", "24000",
-                    "-ac", "1", str(out_mp3)], check=True)
-    wav.unlink()
-    dur = _probe_duration(out_mp3)
+def _estimate_words(text, start, dur):
     tokens = text.split()
     weights = [len(t) + 2 for t in tokens]
-    total = sum(weights)
-    t, words = 0.0, []
+    total = sum(weights) or 1
+    t, words = start, []
     for tok, w in zip(tokens, weights):
         d = dur * w / total
         words.append((t, t + d, tok))
@@ -51,20 +39,84 @@ def _espeak(text: str, out_mp3: Path):
     return words
 
 
-def synthesize(text: str, out_mp3: Path, voice: str = DEFAULT_VOICE, rate: str = "+0%"):
+def _sentences(text):
+    parts = re.split(r"(?<=[.!?])\s+", text.strip())
+    return [p for p in parts if p]
+
+
+# ---------------- Kokoro ----------------
+def _kokoro_engine():
+    global _kokoro
+    if _kokoro is None:
+        from kokoro_onnx import Kokoro
+        _kokoro = Kokoro(str(MODELS / "kokoro-v1.0.onnx"), str(MODELS / "voices-v1.0.bin"))
+    return _kokoro
+
+
+def _kokoro_tts(text, voice, out_mp3: Path, speed=float(os.environ.get('TTS_SPEED', '0.94'))):
+    import numpy as np
+    import soundfile as sf
+    k = _kokoro_engine()
+    lang = "en-gb" if voice.startswith("b") else "en-us"
+    chunks, words, t, sr = [], [], 0.0, 24000
+    for s in _sentences(text):
+        audio, sr = k.create(s, voice=voice, speed=speed, lang=lang)
+        d = len(audio) / sr
+        words += _estimate_words(s, t, d)
+        gap = np.zeros(int(SENTENCE_GAP * sr), dtype=audio.dtype)
+        chunks += [audio, gap]
+        t += d + SENTENCE_GAP
+    wav = out_mp3.with_suffix(".k.wav")
+    sf.write(wav, np.concatenate(chunks), sr)
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav), "-b:a", "192k",
+                    str(out_mp3)], check=True)
+    wav.unlink()
+    return words
+
+
+# ---------------- Edge ----------------
+async def _edge(text, voice, out_mp3: Path):
+    import edge_tts
+    words = []
+    comm = edge_tts.Communicate(text, voice, boundary="WordBoundary")
+    with open(out_mp3, "wb") as f:
+        async for chunk in comm.stream():
+            if chunk["type"] == "audio":
+                f.write(chunk["data"])
+            elif chunk["type"] == "WordBoundary":
+                s = chunk["offset"] / 1e7
+                words.append((s, s + chunk["duration"] / 1e7, chunk["text"]))
+    return words
+
+
+def _espeak(text, out_mp3: Path):
+    wav = out_mp3.with_suffix(".e.wav")
+    subprocess.run(["espeak-ng", "-v", "en-us", "-s", "160", "-w", str(wav), text], check=True)
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav), str(out_mp3)], check=True)
+    wav.unlink()
+    return _estimate_words(text, 0, _probe_duration(out_mp3))
+
+
+def synthesize(text: str, out_mp3: Path, voice: str = DEFAULT_VOICE):
     """Return (duration_seconds, [(start, end, word), ...])."""
-    words = None
-    for attempt in range(3):
+    engine = os.environ.get("TTS_ENGINE", "kokoro")
+    order = {"kokoro": ["kokoro", "edge", "espeak"], "edge": ["edge", "kokoro", "espeak"]}.get(
+        engine, ["kokoro", "edge", "espeak"])
+    for eng in order:
         try:
-            words = asyncio.run(_edge(text, voice, rate, out_mp3))
-            if out_mp3.exists() and out_mp3.stat().st_size > 1000:
-                break
-        except Exception as e:  # network hiccup → retry, then fallback
-            print(f"  edge-tts attempt {attempt + 1} failed: {e.__class__.__name__}")
-            words = None
-    if not words:
-        if not shutil.which("espeak-ng"):
-            raise RuntimeError("No TTS engine available")
-        print("  ! falling back to espeak-ng (test quality only)")
-        words = _espeak(text, out_mp3)
-    return _probe_duration(out_mp3), words
+            if eng == "kokoro" and (MODELS / "kokoro-v1.0.onnx").exists():
+                v = voice if "_" in voice else DEFAULT_VOICE
+                words = _kokoro_tts(text, v, out_mp3)
+            elif eng == "edge":
+                v = voice if "Neural" in voice else "en-US-AndrewMultilingualNeural"
+                words = asyncio.run(_edge(text, v, out_mp3))
+            elif eng == "espeak" and shutil.which("espeak-ng"):
+                print("  ! espeak fallback (test quality only)")
+                words = _espeak(text, out_mp3)
+            else:
+                continue
+            if out_mp3.exists() and out_mp3.stat().st_size > 1000 and words:
+                return _probe_duration(out_mp3), words
+        except Exception as e:
+            print(f"  {eng} failed: {e.__class__.__name__}: {str(e)[:120]}")
+    raise RuntimeError("No TTS engine succeeded")

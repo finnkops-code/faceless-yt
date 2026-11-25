@@ -26,12 +26,23 @@
         "warehouse store shopping carts",
         "wholesale store aisle",
         "shopping cart groceries"
+      ],
+      "images": [
+        "commons:Costco warehouse interior",
+        "commons:Costco store exterior"
       ]
     },
     {
       "title_card": "Costco sells memberships. Groceries are the bait.",
       "kicker": "The short answer",
-      "narration": "Here's the short version. Costco doesn't really make its money selling groceries. It makes its money selling memberships, and the groceries are how it gets you to buy one."
+      "narration": "Here's the short version. Costco doesn't really make its money selling groceries. It makes its money selling memberships, and the groceries are how it gets you to buy one.",
+      "images": [
+        "commons:Costco membership card"
+      ],
+      "visuals": [
+        "warehouse store shopping carts",
+        "shopping cart store"
+      ]
     },
     {
       "chapter": "The numbers",
@@ -52,7 +63,14 @@
         "decimals": 1,
         "highlight": "Membership fees",
         "source": "Costco FY2026 results (Sept 24, 2026)"
-      }
+      },
+      "images": [
+        "commons:Costco warehouse aisle"
+      ],
+      "visuals": [
+        "cash register shopping",
+        "shopping receipt"
+      ]
     },
     {
       "narration": "But now compare it to profit instead of revenue. Costco's net income for the year was nine point two billion dollars. The membership fees alone were equal to roughly two thirds of that. And unlike a television or a bag of rice, a membership costs Costco almost nothing to deliver. There's no product to buy, ship or store. Nearly every dollar of fee income falls straight through to the bottom line.",
@@ -72,7 +90,14 @@
         "decimals": 1,
         "highlight": "Membership fees",
         "source": "Costco FY2026 results"
-      }
+      },
+      "images": [
+        "commons:Costco checkout"
+      ],
+      "visuals": [
+        "money counting",
+        "credit card payment"
+      ]
     },
     {
       "chapter": "Why the margin is so low on purpose",
@@ -81,6 +106,9 @@
         "supermarket price tags",
         "bulk products shelves",
         "customer comparing prices grocery"
+      ],
+      "images": [
+        "supermarket price tag"
       ]
     },
     {
@@ -89,6 +117,9 @@
         "pallets warehouse store",
         "forklift warehouse",
         "big box store interior"
+      ],
+      "images": [
+        "commons:Costco pallets merchandise"
       ]
     },
     {
@@ -109,7 +140,14 @@
         "unit": "%",
         "decimals": 1,
         "source": "Costco FY2026 results"
-      }
+      },
+      "images": [
+        "commons:Costco entrance members"
+      ],
+      "visuals": [
+        "store entrance people",
+        "customer loyalty card"
+      ]
     },
     {
       "narration": "Costco ended the year with eighty-four point one million paid members, and more than a hundred and fifty million cardholders once you count the extra household cards. That's a base of recurring revenue that shows up year after year, almost regardless of what happens to the price of eggs or televisions.",
@@ -130,6 +168,39 @@
         "unit": "M",
         "decimals": 1,
         "source": "Costco 10-K, fiscal 2026"
+      },
+      "images": [
+        "commons:Costco parking lot"
+      ],
+      "visuals": [
+        "shopping cart parking lot",
+        "family shopping"
+      ]
+    },
+    {
+      "chapter": "What one member is worth",
+      "narration": "Here's a simple way to feel the size of it. Divide Costco's membership fees by its paid members, and the average member hands over roughly seventy dollars a year before buying a single thing. That's an average across cheaper international memberships and the pricier Executive ones. Now multiply it by eighty-four million people, and remember that about nine in ten of them come back next year without being asked. Most companies spend fortunes trying to buy that kind of loyalty. Costco gets paid for it.",
+      "visuals": [
+        "counting cash money",
+        "people shopping in store",
+        "calculator finance desk"
+      ],
+      "images": [
+        "commons:Costco members shopping"
+      ],
+      "chart": {
+        "type": "bar",
+        "title": "Average fee per paid member",
+        "subtitle": "Fiscal 2026, US dollars per year",
+        "labels": [
+          "Membership fees \u00f7 paid members"
+        ],
+        "values": [
+          70.2
+        ],
+        "unit": "$",
+        "decimals": 0,
+        "source": "Calculated from Costco FY2026 results"
       }
     },
     {
@@ -139,6 +210,9 @@
         "credit card payment checkout",
         "family shopping warehouse store",
         "receipt shopping"
+      ],
+      "images": [
+        "commons:Costco executive membership"
       ]
     },
     {
@@ -148,6 +222,9 @@
         "membership card wallet",
         "people walking into store entrance",
         "shopping mall crowd"
+      ],
+      "images": [
+        "commons:Costco Wholesale sign"
       ]
     },
     {
@@ -157,6 +234,9 @@
         "private label products shelf",
         "bulk food packaging",
         "grocery store products"
+      ],
+      "images": [
+        "commons:Kirkland Signature products"
       ]
     },
     {
@@ -165,6 +245,9 @@
         "hot dog food court",
         "fast food counter",
         "people eating food court"
+      ],
+      "images": [
+        "commons:Costco food court hot dog"
       ]
     },
     {
@@ -174,6 +257,9 @@
         "gas station fuel pump",
         "pharmacy counter",
         "airplane travel vacation"
+      ],
+      "images": [
+        "commons:Costco gas station"
       ]
     },
     {
@@ -183,6 +269,9 @@
         "construction site new building",
         "aerial view big box store",
         "suburban road traffic"
+      ],
+      "images": [
+        "commons:Costco new warehouse construction"
       ]
     },
     {
@@ -192,6 +281,9 @@
         "conveyor belt logistics",
         "delivery trucks fleet",
         "distribution center aerial"
+      ],
+      "images": [
+        "commons:Costco distribution center"
       ]
     },
     {
@@ -201,6 +293,9 @@
         "stock market chart screen",
         "business analysis documents",
         "city skyline evening"
+      ],
+      "images": [
+        "commons:Costco Issaquah headquarters"
       ]
     },
     {
@@ -208,6 +303,9 @@
       "visuals": [
         "parking lot shopping carts",
         "store exterior evening"
+      ],
+      "images": [
+        "commons:Costco store at night"
       ]
     }
   ],
@@ -217,5 +315,6 @@
     "Costco Q1 and Q4 FY2026 earnings calls",
     "Zacks / Nasdaq: \"Costco's Best Numbers Came With an Asterisk\", Sept 2026",
     "Costco Q3 FY2026 results and earnings call, May 28, 2026"
-  ]
+  ],
+  "voice": "bm_fable"
 }

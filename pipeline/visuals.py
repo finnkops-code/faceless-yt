@@ -160,9 +160,14 @@ def render_chart(spec: dict, out_png: Path):
     import matplotlib.pyplot as plt
     _fonts()
     plt.rcParams["font.family"] = "Inter"
-    fig = plt.figure(figsize=(19.2, 10.8), dpi=100, facecolor=BG)
+    fig = plt.figure(figsize=(19.2, 10.8), dpi=100, facecolor=(0, 0, 0, 0))
+    from matplotlib.patches import FancyBboxPatch
+    fig.patches.append(FancyBboxPatch((0.04, 0.05), 0.92, 0.9, boxstyle="round,pad=0,rounding_size=0.02",
+                                      transform=fig.transFigure, facecolor=(0.055, 0.067, 0.086, 0.86),
+                                      edgecolor=(1, 1, 1, 0.08), lw=2, zorder=-10))
     left = 0.27 if spec.get("type") == "hbar" else 0.08
-    ax = fig.add_axes([left, 0.22, 0.92 - left, 0.56], facecolor=BG)
+    ax = fig.add_axes([left, 0.2, 0.92 - left, 0.58])
+    ax.patch.set_alpha(0)
     labels, values = spec["labels"], spec["values"]
     unit = spec.get("unit", "")
     hl = spec.get("highlight")
@@ -202,15 +207,16 @@ def render_chart(spec: dict, out_png: Path):
         fig.text(0.08, 0.84, spec["subtitle"], color=MUTED, fontsize=26)
     if spec.get("source"):
         fig.text(0.92, 0.895, f"Source: {spec['source']}", color=MUTED, fontsize=18, ha="right")
-    fig.savefig(out_png, facecolor=BG)
+    fig.savefig(out_png, transparent=True)
     plt.close(fig)
 
 
 def render_title_card(text: str, out_png: Path, kicker: str = ""):
     from PIL import Image, ImageDraw, ImageFont
     fonts = _fonts()
-    img = Image.new("RGB", (W, H), BG)
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
+    d.rectangle([0, 0, W, H], fill=(10, 12, 16, 150))
     big = ImageFont.truetype(str(fonts / "Anton-Regular.ttf"), 150)
     small = ImageFont.truetype(str(fonts / "Inter-Bold.otf"), 46)
     lines = _wrap(d, text.upper(), big, W - 300)
@@ -221,7 +227,7 @@ def render_title_card(text: str, out_png: Path, kicker: str = ""):
     for ln in lines:
         d.text((150, y), ln, font=big, fill=INK)
         y += 170
-    d.rectangle([150, y + 20, 390, y + 34], fill=ACCENT)
+    d.rectangle([150, y + 45, 390, y + 59], fill=ACCENT)
     img.save(out_png)
 
 
@@ -250,3 +256,114 @@ def fallback_background(out_png: Path, seed: str):
         c = rnd.choice([(245, 183, 0), (63, 167, 214), (40, 48, 64)])
         d.ellipse([x - r, y - r, x + r, y + r], fill=tuple(int(v * 0.35) for v in c))
     img.filter(ImageFilter.GaussianBlur(120)).save(out_png)
+
+
+# ---------------- photos ----------------
+COMMONS_UA = {"User-Agent": "HiddenLedgerPipeline/1.0 (github.com/finnkops-code/faceless-yt)"}
+OK_LICENSES = ("cc0", "public domain", "pd", "cc by 2", "cc by 3", "cc by 4", "cc by-sa")
+
+
+def _strip_html(t):
+    import re
+    return re.sub(r"<[^>]+>", "", t or "").strip()
+
+
+def _commons(query, n=8):
+    q = urllib.parse.quote(query)
+    url = ("https://commons.wikimedia.org/w/api.php?action=query&format=json&generator=search"
+           f"&gsrnamespace=6&gsrsearch={q}%20filetype:bitmap&gsrlimit={n}&prop=imageinfo"
+           "&iiprop=url|size|extmetadata&iiurlwidth=2560")
+    req = urllib.request.Request(url, headers=COMMONS_UA)
+    with urllib.request.urlopen(req, timeout=30) as r:
+        data = json.loads(r.read())
+    pages = sorted(data.get("query", {}).get("pages", {}).values(), key=lambda p: p.get("index", 99))
+    out = []
+    for p in pages:
+        ii = (p.get("imageinfo") or [{}])[0]
+        meta = ii.get("extmetadata", {})
+        lic = meta.get("LicenseShortName", {}).get("value", "").lower()
+        title = p.get("title", "")
+        if not any(lic.startswith(l) for l in OK_LICENSES) or "nc" in lic or "nd" in lic:
+            continue
+        if "logo" in title.lower() or ii.get("width", 0) < 1200 or ii.get("width", 0) < ii.get("height", 1):
+            continue
+        credit = f"{title.replace('File:', '')} by {_strip_html(meta.get('Artist', {}).get('value', 'unknown'))[:80]}, {meta.get('LicenseShortName', {}).get('value')}, via Wikimedia Commons"
+        out.append((f"commons-{p['pageid']}", ii.get("thumburl") or ii["url"], credit))
+    return out
+
+
+def _pexels_photos(query, n=8):
+    key = os.environ.get("PEXELS_API_KEY")
+    if not key:
+        return []
+    q = urllib.parse.quote(query)
+    data = _get_json(f"https://api.pexels.com/v1/search?query={q}&orientation=landscape&per_page={n}",
+                     {"Authorization": key})
+    return [(f"pexelsimg-{p['id']}", p["src"]["large2x"], None) for p in data.get("photos", [])]
+
+
+def fetch_photos(queries, cache: Path, used: set, need: int, credits: list):
+    """Queries prefixed 'commons:' search Wikimedia Commons (real places/products/people-free);
+    others search Pexels photos. Returns list of image paths; appends attributions to credits."""
+    cache.mkdir(parents=True, exist_ok=True)
+    out = []
+    for q in queries:
+        if len(out) >= need:
+            break
+        src = "commons" if q.lower().startswith("commons:") else "pexels"
+        term = q.split(":", 1)[1].strip() if src == "commons" else q
+        try:
+            cands = _commons(term) if src == "commons" else _pexels_photos(term)
+        except Exception as e:
+            print(f"  photo search failed '{q}': {e}")
+            continue
+        for cid, url, credit in cands:
+            if cid in used:
+                continue
+            dest = cache / f"{cid}.jpg"
+            try:
+                if not dest.exists():
+                    req = urllib.request.Request(url, headers=COMMONS_UA if src == "commons" else UA)
+                    with urllib.request.urlopen(req, timeout=60) as r, open(dest, "wb") as f:
+                        f.write(r.read())
+            except Exception as e:
+                print(f"  photo download failed {cid}: {e}")
+                continue
+            used.add(cid)
+            out.append(dest)
+            if credit and credit not in credits:
+                credits.append(credit)
+            break
+    return out
+
+
+def ken_burns(img: Path, dest: Path, duration: float, seed: str):
+    """Slow zoom/pan over a still photo."""
+    rnd = random.Random(seed)
+    frames = max(1, int(duration * FPS))
+    mode = rnd.choice(["in", "out", "left", "right"])
+    z = {"in": "1.0+0.12*on/{f}", "out": "1.12-0.12*on/{f}"}.get(mode, "1.12").format(f=frames)
+    if mode == "left":
+        x = f"(iw-iw/zoom)*(1-on/{frames})"
+    elif mode == "right":
+        x = f"(iw-iw/zoom)*on/{frames}"
+    else:
+        x = "iw/2-(iw/zoom/2)"
+    vf = (f"scale={W*2}:{H*2}:force_original_aspect_ratio=increase,crop={W*2}:{H*2},"
+          f"zoompan=z='{z}':x='{x}':y='ih/2-(ih/zoom/2)':d={frames}:s={W}x{H}:fps={FPS},"
+          f"setsar=1,eq=contrast=1.04:saturation=1.06")
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(img), "-t", f"{duration:.3f}",
+                    "-vf", vf, "-c:v", "libx264", "-preset", "veryfast", "-crf", "19",
+                    "-pix_fmt", "yuv420p", str(dest)], check=True)
+
+
+def overlay_on(bg_clip: Path, png: Path, dest: Path, duration: float):
+    """Blur + darken a footage clip and fade a transparent graphic (chart/card) on top."""
+    subprocess.run([
+        "ffmpeg", "-y", "-loglevel", "error", "-i", str(bg_clip), "-loop", "1", "-i", str(png),
+        "-filter_complex",
+        f"[0:v]boxblur=18:2,eq=brightness=-0.12:saturation=0.8[bg];"
+        f"[1:v]format=rgba,scale={W}:{H},fade=in:st=0:d=0.45:alpha=1[fg];"
+        f"[bg][fg]overlay=0:0:shortest=1,fps={FPS},setsar=1[v]",
+        "-map", "[v]", "-t", f"{duration:.3f}", "-c:v", "libx264", "-preset", "veryfast",
+        "-crf", "19", "-pix_fmt", "yuv420p", str(dest)], check=True)

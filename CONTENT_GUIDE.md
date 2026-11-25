@@ -39,7 +39,8 @@ No sensational or misleading titles, no distressing content, no fake people or t
   "category_id": "27",
   "thumbnail": {"text": "3–6 WORDS", "highlight": "WORDS TO COLOR YELLOW"},
   "sections": [
-    {"chapter": "optional chapter name", "narration": "...", "visuals": ["pexels search query", "..."]},
+    {"chapter": "optional chapter name", "narration": "...",
+     "visuals": ["stock video query", "..."], "images": ["commons:Costco store exterior", "photo query"]},
     {"narration": "...", "chart": {"type": "bar|hbar|line", "title": "...", "subtitle": "units",
       "labels": ["..."], "values": [1.0], "unit": "$|%|M|...", "decimals": 1,
       "highlight": "label to color yellow (optional)", "source": "short source"}},
@@ -51,9 +52,18 @@ No sensational or misleading titles, no distressing content, no fake people or t
 - Total narration **1,350–1,700 words** (≈ 8.5–11 min). Videos under 8:00 get no mid-roll ads.
 - 14–20 sections, 60–130 words each. First section has `chapter` (chapters need start at 0:00).
 - Write numbers as words in narration where TTS might misread ("twenty twenty-six", "nine point two billion").
+- **Every section needs footage — the screen must never be static.** Charts and title cards are
+  overlaid on blurred footage, so chart/title sections need `visuals` too.
+- `images`: 1–2 photo queries per section where a real thing helps. Prefix `commons:` to search
+  Wikimedia Commons for the actual company/place/product (store exteriors, HQ, products, food court);
+  without prefix it searches Pexels photos. Only free licenses are used and credits go in the
+  description automatically. No logos, no identifiable private people.
 - `visuals`: 2–3 concrete, filmable stock-footage queries per section (objects/places/actions, no brand
   logos, no specific people). Pexels has no brand footage — "airplane cabin", not "Ryanair plane".
 - End with a CTA asking which company to break down next (comments = topic ideas + engagement).
 
 ## Cadence
 2 videos per week (Mon + Thu publish). Quality over volume.
+
+## Voice
+Kokoro `bm_fable` (British male), chosen by Finn. Do not set `voice` per script unless asked.
