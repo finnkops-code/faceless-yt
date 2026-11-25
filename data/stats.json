@@ -1,12 +1,55 @@
 {
-  "taken": "2026-11-25T14:38:00.477758+00:00",
+  "taken": "2026-11-25T15:35:35.281364+00:00",
   "channel": {
     "viewCount": "0",
     "subscriberCount": "1",
     "hiddenSubscriberCount": false,
-    "videoCount": "1"
+    "videoCount": "2"
   },
+  "analytics_available": false,
   "videos": [
+    {
+      "id": "P5GffN7bLus",
+      "title": "84 million people pay Costco before buying anything #Shorts",
+      "published": "2026-11-25T15:02:05Z",
+      "privacy": "private",
+      "duration": "PT32S",
+      "viewCount": 0,
+      "likeCount": 0,
+      "dislikeCount": 0,
+      "favoriteCount": 0,
+      "commentCount": 0,
+      "is_short": true,
+      "views_per_day": 0.0
+    },
+    {
+      "id": "a_d5UtHcAhY",
+      "title": "Why Costco's $1.50 hot dog never gets more expensive #Shorts",
+      "published": "2026-11-25T14:59:38Z",
+      "privacy": "private",
+      "duration": "PT33S",
+      "viewCount": 0,
+      "likeCount": 0,
+      "dislikeCount": 0,
+      "favoriteCount": 0,
+      "commentCount": 0,
+      "is_short": true,
+      "views_per_day": 0.0
+    },
+    {
+      "id": "1rxAWSK_xIU",
+      "title": "Costco barely profits from the stuff it sells #Shorts",
+      "published": "2026-11-25T14:58:53Z",
+      "privacy": "public",
+      "duration": "PT38S",
+      "viewCount": 16,
+      "likeCount": 0,
+      "dislikeCount": 0,
+      "favoriteCount": 0,
+      "commentCount": 0,
+      "is_short": true,
+      "views_per_day": 16.0
+    },
     {
       "id": "RO0t7iF2Epg",
       "title": "Costco Barely Profits From Its Products. So How Does It Make $9 Billion?",
@@ -17,7 +60,9 @@
       "likeCount": 1,
       "dislikeCount": 0,
       "favoriteCount": 0,
-      "commentCount": 0
+      "commentCount": 0,
+      "is_short": false,
+      "views_per_day": 1.0
     }
   ]
 }
