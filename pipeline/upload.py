@@ -29,12 +29,9 @@ def creds():
 
 
 def client():
-    creds = Credentials(None, refresh_token=os.environ["YT_REFRESH_TOKEN"],
-                        token_uri="https://oauth2.googleapis.com/token",
-                        client_id=os.environ["YT_CLIENT_ID"],
-                        client_secret=os.environ["YT_CLIENT_SECRET"], scopes=SCOPES)
-    return build("youtube", "v3", credentials=creds, cache_discovery=False)
-
+    # no explicit scopes: the refreshed token gets every scope that was granted
+    # (upload, readonly, force-ssl for captions/comments/localizations, yt-analytics)
+    return build("youtube", "v3", credentials=creds(), cache_discovery=False)
 
 def next_slot(hour_utc=15):
     """Default publish time: next day at 15:00 UTC (US morning)."""
