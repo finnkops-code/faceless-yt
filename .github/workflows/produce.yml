@@ -2,7 +2,7 @@ name: produce
 on:
   push:
     branches: [main]
-    paths: ["content/queue/**"]
+    paths: ["content/queue/**", "trigger/**"]
   schedule:
     - cron: "17 6 * * *"     # daily safety net + stats snapshot
   workflow_dispatch:
