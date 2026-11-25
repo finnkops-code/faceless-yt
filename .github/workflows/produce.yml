@@ -73,8 +73,11 @@ jobs:
               extra+=("$d/$n.mp4" "$d/$n.json" "$d/$n.srt")
             done
             [ ${#extra[@]} -gt 0 ] || continue
-            gh release create "video-$slug" "${extra[@]}" \
-              --title "$slug" --notes "Long video + captions + Shorts (short_N.*). Ready for upload" || true
+            for try in 1 2 3; do
+              gh release create "video-$slug" "${extra[@]}" \
+                --title "$slug" --notes "Long video + captions + Shorts (short_N.*). Ready for upload" && break
+              sleep 20
+            done
           done
 
       - name: Stats snapshot
