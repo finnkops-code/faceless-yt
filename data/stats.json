@@ -1,7 +1,7 @@
 {
-  "taken": "2026-11-25T16:47:40.969953+00:00",
+  "taken": "2026-11-26T10:39:02.595569+00:00",
   "channel": {
-    "viewCount": "0",
+    "viewCount": "77",
     "subscriberCount": "1",
     "hiddenSubscriberCount": false,
     "videoCount": "2"
@@ -42,13 +42,13 @@
       "published": "2026-11-25T14:58:53Z",
       "privacy": "public",
       "duration": "PT38S",
-      "viewCount": 24,
-      "likeCount": 0,
+      "viewCount": 72,
+      "likeCount": 1,
       "dislikeCount": 0,
       "favoriteCount": 0,
       "commentCount": 0,
       "is_short": true,
-      "views_per_day": 24.0
+      "views_per_day": 72.0
     },
     {
       "id": "RO0t7iF2Epg",
@@ -56,13 +56,13 @@
       "published": "2026-11-25T13:44:52Z",
       "privacy": "public",
       "duration": "PT8M25S",
-      "viewCount": 2,
+      "viewCount": 8,
       "likeCount": 1,
       "dislikeCount": 0,
       "favoriteCount": 0,
       "commentCount": 1,
       "is_short": false,
-      "views_per_day": 2.0
+      "views_per_day": 8.0
     }
   ]
 }
