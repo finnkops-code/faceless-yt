@@ -153,7 +153,7 @@ No sensational or misleading titles, no distressing content, no fake people or t
   queries, `commons:` photos of the real company. 3–5 visual/image queries per Short.
 - Avoid ambiguous stock queries ("hot dog" returns dogs): for food/products of the company, use `commons:` images.
 - Rendered vertically (1080×1920) with big burned-in captions (Shorts are mostly watched muted).
-- They publish one per day after the long video and link to it.
+- They publish one per day after the long video and link to it, so the channel posts something every day.
 
 ## Subtitles
 Every long video and Short gets a clean English SRT (2 lines, ≤ 42 chars) uploaded as a caption
@@ -179,8 +179,11 @@ Still write precise, subject-first queries: QA catches mistakes, it doesn't fix 
 - Pinned comment: one specific question tied to the video that invites an answer (not "like and
   subscribe"). Rotate: topic request / opinion question / "what surprised you most?".
 
-## Cadence
-2 videos per week (Mon + Thu publish). Quality over volume.
+## Cadence (Finn, 26-11-2026)
+3 long-form videos per week (script runs Mon/Wed/Fri, video publishes the next day) + at least 1 Short
+every day (3 Shorts per video = 9 per week). Quality over volume: daily long-form risks YouTube's
+mass-produced/inauthentic-content policy and thinner research. Scale to 4 long-form per week only once
+average view % stays above ~40% and subscribers grow week over week.
 
 ## Voice
 Kokoro `bm_fable` (British male), chosen by Finn. Do not set `voice` per script unless asked.
