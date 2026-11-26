@@ -114,6 +114,9 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 FALLBACK_IMAGES = []
 
 
+GOOD = []   # every accepted (QA-passed) asset of this render, reused when a section finds nothing new
+
+
 def _shots(sec, n, work, used, credits, slug, i):
     """Footage pool for a section: on-topic stock video + photos, interleaved.
     If strict stock matching finds too little, fill with real topic photos (Commons) instead of filler."""
@@ -129,6 +132,13 @@ def _shots(sec, n, work, used, credits, slug, i):
             pool.append(("img", imgs[k]))
         if k < len(vids):
             pool.append(("vid", vids[k]))
+    GOOD.extend(pool)
+    if len(pool) < max(1, n // 2) and GOOD:
+        # too little new on-topic material: reuse earlier approved shots (different segment of each
+        # clip, different Ken Burns move) instead of an empty abstract background
+        older = [x for x in GOOD if x not in pool]
+        random.Random(f"{slug}{i}").shuffle(older)
+        pool += older[: max(0, n - len(pool))]
     return pool
 
 
@@ -262,6 +272,7 @@ def section_visuals(sec, i, seg, work, used, credits, slug):
 
 
 def build(script_path: Path, out_root: Path = ROOT / "output"):
+    GOOD.clear()
     spec = json.loads(Path(script_path).read_text())
     slug = spec["slug"]
     out = out_root / slug
