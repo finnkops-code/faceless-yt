@@ -1,13 +1,27 @@
 {
-  "taken": "2026-11-26T10:39:02.595569+00:00",
+  "taken": "2026-11-26T17:12:34.046247+00:00",
   "channel": {
-    "viewCount": "77",
+    "viewCount": "80",
     "subscriberCount": "1",
     "hiddenSubscriberCount": false,
-    "videoCount": "2"
+    "videoCount": "3"
   },
   "analytics_status": "no_data_yet",
   "videos": [
+    {
+      "id": "a_d5UtHcAhY",
+      "title": "Why Costco's $1.50 hot dog never gets more expensive #Shorts",
+      "published": "2026-11-26T15:00:18Z",
+      "privacy": "public",
+      "duration": "PT33S",
+      "viewCount": 490,
+      "likeCount": 3,
+      "dislikeCount": 0,
+      "favoriteCount": 0,
+      "commentCount": 0,
+      "is_short": true,
+      "views_per_day": 490.0
+    },
     {
       "id": "P5GffN7bLus",
       "title": "84 million people pay Costco before buying anything #Shorts",
@@ -23,32 +37,18 @@
       "views_per_day": 0.0
     },
     {
-      "id": "a_d5UtHcAhY",
-      "title": "Why Costco's $1.50 hot dog never gets more expensive #Shorts",
-      "published": "2026-11-25T14:59:38Z",
-      "privacy": "private",
-      "duration": "PT33S",
-      "viewCount": 0,
-      "likeCount": 0,
-      "dislikeCount": 0,
-      "favoriteCount": 0,
-      "commentCount": 0,
-      "is_short": true,
-      "views_per_day": 0.0
-    },
-    {
       "id": "1rxAWSK_xIU",
       "title": "Costco barely profits from the stuff it sells #Shorts",
       "published": "2026-11-25T14:58:53Z",
       "privacy": "public",
       "duration": "PT38S",
-      "viewCount": 72,
+      "viewCount": 76,
       "likeCount": 1,
       "dislikeCount": 0,
       "favoriteCount": 0,
       "commentCount": 0,
       "is_short": true,
-      "views_per_day": 72.0
+      "views_per_day": 69.5
     },
     {
       "id": "RO0t7iF2Epg",
@@ -56,13 +56,13 @@
       "published": "2026-11-25T13:44:52Z",
       "privacy": "public",
       "duration": "PT8M25S",
-      "viewCount": 8,
-      "likeCount": 1,
+      "viewCount": 13,
+      "likeCount": 2,
       "dislikeCount": 0,
       "favoriteCount": 0,
       "commentCount": 1,
       "is_short": false,
-      "views_per_day": 8.0
+      "views_per_day": 11.4
     }
   ]
 }
