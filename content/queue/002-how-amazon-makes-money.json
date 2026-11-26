@@ -1,0 +1,622 @@
+{
+  "slug": "002-how-amazon-makes-money",
+  "title": "The $68 Billion Business Hiding Inside Amazon",
+  "title_options": [
+    "The $68 Billion Business Hiding Inside Amazon",
+    "Amazon's Store Isn't Where It Makes Its Money",
+    "18% of Amazon's Sales Make 57% of Its Profit"
+  ],
+  "growth_notes": "Stats (25-11-2026, channel 1 day old): Costco long-form 2 views; Costco Short 'barely profits from the stuff it sells' 24 views/day while the other two Shorts were still private with 0 views. Avg view % and subs/1k not yet reported. Too early to rank, so we follow the playbook. Signal so far: the paradox Short (profit doesn't come from the obvious product) is the only thing that got reach, so this video keeps that 'hidden profit engine' angle with a famous brand at peak search interest (Black Friday / holiday shopping week). ONE thing tested: title framing. Costco used a paradox question with a number ('...So How Does It Make $9 Billion?'); this one uses a short 'hidden business' statement with one number ('The $68 Billion Business Hiding Inside Amazon'). Compare CTR and views/day once both have 7 days of data.",
+  "pinned_comment": "Be honest: do you ever click the 'Sponsored' results on Amazon, or scroll straight past them?",
+  "description": "Amazon sold $716.9 billion of goods and services in 2025, but the store you shop in is not where most of its profit comes from. AWS was about 18% of sales and about 57% of operating income, while third-party seller fees ($172.2 billion) and advertising ($68.6 billion) quietly turned the store into a landlord business. We break down Amazon's 2025 annual report and Q3 2026 results, the record 13.9% operating margin, and the $220 billion AI data-center bet that turned free cash flow negative.",
+  "tags": [
+    "amazon",
+    "how amazon makes money",
+    "amazon business model",
+    "aws",
+    "amazon advertising",
+    "amazon sellers",
+    "business explained",
+    "amazon earnings",
+    "black friday",
+    "amazon prime",
+    "cloud computing",
+    "how companies make money",
+    "business case study"
+  ],
+  "category_id": "27",
+  "thumbnail": {
+    "text": "THE STORE ISN'T THE BUSINESS",
+    "highlight": "ISN'T",
+    "photo_query": "Amazon fulfillment center",
+    "variants": [
+      {
+        "style": "number",
+        "number": "$68.6 BILLION",
+        "label": "from 'sponsored' results, 2025"
+      },
+      {
+        "style": "band",
+        "text": "18% of sales, 57% of profit",
+        "highlight": "57%"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "chapter": "The checkout",
+      "narration": "This week, millions of people will fill an Amazon shopping cart and click buy. Headphones, toys, coffee pods, a new air fryer. Last year Amazon sold seven hundred and seventeen billion dollars' worth of stuff and services. But here's the strange part. The shopping part, the bit you actually see, is not where most of Amazon's profit comes from. Not even close. The real money is hiding in two businesses most shoppers never think about, and one of them is sitting right on the product page in front of you.",
+      "visuals": [
+        "online shopping laptop",
+        "cardboard boxes delivery",
+        "package doorstep delivery"
+      ],
+      "images": [
+        "commons:Amazon fulfillment center",
+        "commons:Amazon delivery van"
+      ],
+      "callouts": [
+        {
+          "at": "seven hundred and seventeen",
+          "text": "$716.9 billion",
+          "label": "Amazon net sales, 2025"
+        }
+      ]
+    },
+    {
+      "title_card": "The store is the front door. The profit is behind it.",
+      "kicker": "The short answer",
+      "narration": "Here's the short version. Amazon's store is the front door. It brings in the customers, the sellers and the data. The profit mostly comes from what Amazon rents out behind that door. Computers to other companies, shelf space to other sellers, and your attention to advertisers. Let's follow the money, one door at a time.",
+      "visuals": [
+        "warehouse conveyor boxes",
+        "cardboard boxes conveyor"
+      ],
+      "images": [
+        "commons:Amazon warehouse interior"
+      ]
+    },
+    {
+      "chapter": "Where the sales come from",
+      "narration": "Start with Amazon's annual report for twenty twenty-five. Amazon splits itself into three segments. North America, which is mostly the US store, brought in four hundred and twenty-six billion dollars. The International store brought in one hundred and sixty-two billion. And then there's AWS, Amazon Web Services, the cloud computing business, with one hundred and twenty-nine billion. By sales, the stores dominate. Cloud computing is less than a fifth of the company.",
+      "visuals": [
+        "warehouse shelves packages",
+        "server room racks",
+        "delivery truck highway"
+      ],
+      "images": [
+        "commons:Amazon fulfillment center interior"
+      ],
+      "chart": {
+        "type": "hbar",
+        "title": "Amazon net sales by segment, 2025",
+        "subtitle": "US dollars",
+        "labels": [
+          "North America",
+          "International",
+          "AWS"
+        ],
+        "values": [
+          426.3,
+          161.9,
+          128.7
+        ],
+        "prefix": "$",
+        "suffix": " billion",
+        "decimals": 1,
+        "highlight": "AWS",
+        "source": "Amazon Form 10-K, 2025"
+      }
+    },
+    {
+      "narration": "Now flip it around and look at operating profit instead. North America earned twenty-nine point six billion dollars. International earned just four point seven billion. And AWS, the smallest of the three by sales, earned forty-five point six billion. More than the two stores combined. On the eighty billion dollars of operating income Amazon made in twenty twenty-five, about fifty-seven percent came from renting out computers.",
+      "visuals": [
+        "server room racks",
+        "data center corridor",
+        "network cables server"
+      ],
+      "images": [
+        "commons:Amazon Web Services data center"
+      ],
+      "chart": {
+        "type": "bar",
+        "title": "Operating income by segment, 2025",
+        "subtitle": "US dollars",
+        "labels": [
+          "North America",
+          "International",
+          "AWS"
+        ],
+        "values": [
+          29.6,
+          4.7,
+          45.6
+        ],
+        "prefix": "$",
+        "suffix": " billion",
+        "decimals": 1,
+        "highlight": "AWS",
+        "source": "Amazon Form 10-K, 2025"
+      }
+    },
+    {
+      "narration": "Put those two charts side by side and you get the first big twist. AWS was about eighteen percent of Amazon's sales, but about fifty-seven percent of its operating profit. For every hundred dollars that went through the North American store, Amazon kept roughly seven dollars of operating profit. Internationally, it kept under three. In the cloud, it kept about thirty-five.",
+      "visuals": [
+        "data center servers lights",
+        "shopping cart groceries",
+        "server room technician"
+      ],
+      "images": [
+        "commons:Amazon Web Services data center"
+      ],
+      "callouts": [
+        {
+          "at": "about eighteen percent",
+          "text": "18% of sales",
+          "label": "AWS share, 2025"
+        },
+        {
+          "at": "about fifty-seven percent",
+          "text": "57% of profit",
+          "label": "AWS share of operating income"
+        },
+        {
+          "at": "kept about thirty-five",
+          "text": "≈35% margin",
+          "label": "AWS operating margin, 2025"
+        }
+      ]
+    },
+    {
+      "chapter": "The cloud landlord",
+      "narration": "So what is AWS actually selling? Imagine you're a startup, a streaming service or a bank. Instead of building your own data center, you rent computing power, storage and databases from Amazon by the hour. Amazon builds the warehouses full of servers once, then rents the same machines to thousands of customers. It's the same trick as the store, scale and logistics, just with electricity and chips instead of cardboard boxes. Customers pay for what they use, and once their software is built on Amazon's tools, moving it somewhere else is slow, risky and expensive. So they tend to stay for years. And lately the business is growing faster again.",
+      "visuals": [
+        "data center corridor",
+        "server racks blinking lights",
+        "office developers laptop"
+      ],
+      "images": [
+        "commons:Amazon Web Services",
+        "commons:Data center servers"
+      ]
+    },
+    {
+      "narration": "In the third quarter of twenty twenty-six, AWS sales jumped thirty-nine percent to forty-six billion dollars, driven by companies renting computing power for artificial intelligence. Its operating profit in that quarter was seventeen point eight billion dollars. But that's only half the story. Because there's a second hidden business, and this one doesn't live in a data center. It lives inside the store itself, and you've probably used it today without noticing.",
+      "visuals": [
+        "server room racks",
+        "computer chip closeup",
+        "data center aisle"
+      ],
+      "images": [
+        "commons:Amazon Web Services data center"
+      ],
+      "callouts": [
+        {
+          "at": "thirty-nine percent",
+          "text": "+39%",
+          "label": "AWS sales growth, Q3 2026"
+        },
+        {
+          "at": "forty-six billion dollars",
+          "text": "$46.0 billion",
+          "label": "AWS sales, Q3 2026"
+        },
+        {
+          "at": "seventeen point eight billion",
+          "text": "$17.8 billion",
+          "label": "AWS operating income, Q3 2026"
+        }
+      ]
+    },
+    {
+      "chapter": "The landlord of the store",
+      "narration": "Here's something most shoppers miss. A huge share of what you buy on Amazon isn't sold by Amazon at all. It's sold by independent sellers who list their products on Amazon's site. And those sellers pay. They pay a commission on every sale. Many pay Amazon to store their stock in its warehouses, pack it and ship it. In twenty twenty-five, those third-party seller services brought in one hundred and seventy-two billion dollars.",
+      "visuals": [
+        "warehouse worker packing boxes",
+        "small business owner packing",
+        "warehouse shelves inventory"
+      ],
+      "images": [
+        "commons:Amazon fulfillment center",
+        "commons:Amazon warehouse workers"
+      ],
+      "callouts": [
+        {
+          "at": "one hundred and seventy-two",
+          "text": "$172.2 billion",
+          "label": "third-party seller services, 2025"
+        }
+      ]
+    },
+    {
+      "narration": "Think about what that means. Amazon's own online store sales, the products Amazon buys and resells itself, were two hundred and sixty-nine billion dollars. The fees from other people's products were already almost two thirds of that. Amazon doesn't need to own the toaster to profit from it. It owns the street, the shop window and the delivery van, and the sellers pay rent on all three. And there's one more charge sellers pay, and it's the one that changes everything.",
+      "visuals": [
+        "delivery van street",
+        "cardboard boxes stack",
+        "online shopping laptop"
+      ],
+      "images": [
+        "commons:Amazon delivery van"
+      ],
+      "chart": {
+        "type": "hbar",
+        "title": "Two kinds of store revenue, 2025",
+        "subtitle": "US dollars",
+        "labels": [
+          "Amazon's own online sales",
+          "Third-party seller fees"
+        ],
+        "values": [
+          269.3,
+          172.2
+        ],
+        "prefix": "$",
+        "suffix": " billion",
+        "decimals": 1,
+        "highlight": "Third-party seller fees",
+        "source": "Amazon Form 10-K, 2025"
+      }
+    },
+    {
+      "chapter": "The ads you scroll past",
+      "narration": "Search for anything on Amazon, say phone chargers, and look closely at the first results. Many of them carry a small label: sponsored. Those are ads. Sellers and brands bid to appear at the top, and they pay Amazon every time you click. Add in video ads on Prime Video and ads across the web, and you get Amazon's advertising business. Here's how big it has become.",
+      "visuals": [
+        "smartphone scrolling shopping",
+        "laptop online shopping search",
+        "phone charger cable"
+      ],
+      "images": [
+        "commons:Amazon Prime Video"
+      ]
+    },
+    {
+      "narration": "In twenty twenty-three, Amazon's advertising revenue was forty-six point nine billion dollars. In twenty twenty-four, fifty-six point two billion. In twenty twenty-five, sixty-eight point six billion. That's a forty-six percent jump in two years. For context, Amazon earns more from ads than it does from all of its subscriptions, including Prime, which brought in forty-nine point six billion.",
+      "visuals": [
+        "smartphone scrolling shopping",
+        "laptop online store browsing",
+        "living room TV streaming"
+      ],
+      "images": [
+        "commons:Amazon Echo"
+      ],
+      "chart": {
+        "type": "bar",
+        "title": "Amazon advertising revenue",
+        "subtitle": "US dollars, full year",
+        "labels": [
+          "2023",
+          "2024",
+          "2025"
+        ],
+        "values": [
+          46.9,
+          56.2,
+          68.6
+        ],
+        "prefix": "$",
+        "suffix": " billion",
+        "decimals": 1,
+        "highlight": "2025",
+        "source": "Amazon Form 10-K, 2025"
+      },
+      "callouts": [
+        {
+          "at": "forty-six percent jump",
+          "text": "+46%",
+          "label": "ad revenue, 2023 → 2025"
+        },
+        {
+          "at": "forty-nine point six",
+          "text": "$49.6 billion",
+          "label": "subscription services, 2025"
+        }
+      ]
+    },
+    {
+      "title_card": "The shelf space is the product.",
+      "kicker": "The key insight",
+      "narration": "And here's why ads matter so much. A sponsored listing doesn't need a warehouse, a truck or a driver. Amazon doesn't publish a separate profit figure for advertising. But unlike a package, an ad costs almost nothing extra to deliver. The search results page already exists. Amazon is simply selling the top spot on it. The shelf space has become the product. And every brand that wants to be found has to keep paying for it, because if they stop, a competitor takes the spot the very next day.",
+      "visuals": [
+        "smartphone scrolling shopping",
+        "laptop online shopping search"
+      ],
+      "images": [
+        "commons:Amazon fulfillment center"
+      ]
+    },
+    {
+      "narration": "Those ad dollars are booked inside the two store segments, not inside AWS. That helps explain a quiet shift in the third quarter of twenty twenty-six. North America made eight point seven billion dollars of operating profit, up from four point eight billion a year earlier. If you like seeing the hidden machinery behind everyday things, that's what this channel does every week, so subscribe to Price Tag Physics.",
+      "visuals": [
+        "delivery truck highway",
+        "warehouse conveyor boxes",
+        "package doorstep delivery"
+      ],
+      "images": [
+        "commons:Amazon delivery truck"
+      ],
+      "callouts": [
+        {
+          "at": "eight point seven billion",
+          "text": "$8.7 billion",
+          "label": "North America op. income, Q3 2026"
+        },
+        {
+          "at": "four point eight billion",
+          "text": "$4.8 billion",
+          "label": "same quarter, 2025"
+        }
+      ]
+    },
+    {
+      "chapter": "Why the store still matters",
+      "narration": "So is the store just a charity? Not at all. The store is the machine that feeds the other businesses. More shoppers attract more sellers. More sellers mean more selection, which attracts more shoppers. And every one of those sellers wants to be seen, so they buy ads. To keep that loop spinning, Amazon spends enormously on logistics. In twenty twenty-five its fulfillment costs alone were one hundred and nine billion dollars, and it employed about one point six million people.",
+      "visuals": [
+        "warehouse workers packing",
+        "warehouse robots shelves",
+        "delivery driver packages"
+      ],
+      "images": [
+        "commons:Amazon fulfillment center interior",
+        "commons:Amazon Kiva robots"
+      ],
+      "callouts": [
+        {
+          "at": "one hundred and nine",
+          "text": "$109.1 billion",
+          "label": "fulfillment costs, 2025"
+        },
+        {
+          "at": "one point six million",
+          "text": "≈1.58 million",
+          "label": "employees, end of 2025"
+        }
+      ]
+    },
+    {
+      "narration": "And holding the whole loop together is Prime. Subscriptions, which include Prime memberships along with things like music and video, brought in that forty-nine point six billion dollars last year. But Prime's real job is habit. Members pay up front, so they shop on Amazon first to get their money's worth. In the third quarter of twenty twenty-six alone, Amazon delivered more than one point five billion items same-day or overnight. That kind of speed is what keeps members coming back.",
+      "visuals": [
+        "package doorstep delivery",
+        "delivery driver packages",
+        "cardboard boxes stack"
+      ],
+      "images": [
+        "commons:Amazon Prime delivery",
+        "commons:Amazon delivery van"
+      ],
+      "callouts": [
+        {
+          "at": "one point five billion",
+          "text": "1.5 billion+",
+          "label": "same-day or overnight items, Q3 2026"
+        }
+      ]
+    },
+    {
+      "narration": "And it's working. In the third quarter of twenty twenty-six, Amazon made twenty-eight point one billion dollars of operating income on two hundred and two billion in sales. That's an operating margin of thirteen point nine percent, the highest Amazon has ever reported. AWS contributed nearly two thirds of that profit. For the holiday quarter, Amazon expects sales between two hundred and forty and two hundred and forty-seven billion dollars.",
+      "visuals": [
+        "cardboard boxes delivery",
+        "data center servers lights",
+        "christmas shopping packages"
+      ],
+      "images": [
+        "commons:Amazon delivery van"
+      ],
+      "callouts": [
+        {
+          "at": "twenty-eight point one billion",
+          "text": "$28.1 billion",
+          "label": "operating income, Q3 2026"
+        },
+        {
+          "at": "thirteen point nine percent",
+          "text": "13.9%",
+          "label": "record operating margin"
+        },
+        {
+          "at": "two hundred and forty and",
+          "text": "$240–247 billion",
+          "label": "Q4 2026 sales guidance"
+        }
+      ]
+    },
+    {
+      "chapter": "Can it last?",
+      "narration": "But there's a catch, and it's a big one. The AI boom that is lifting AWS is also eating Amazon's cash. Amazon says it will spend roughly two hundred and twenty billion dollars on capital projects in twenty twenty-six, mostly data centers and chips. Over the twelve months to September, its free cash flow was negative forty-two point four billion dollars. A year earlier, it was positive fourteen point eight billion.",
+      "visuals": [
+        "data center construction",
+        "construction site cranes",
+        "server racks installation"
+      ],
+      "images": [
+        "commons:Data center construction"
+      ],
+      "callouts": [
+        {
+          "at": "two hundred and twenty",
+          "text": "≈$220 billion",
+          "label": "planned capex, 2026"
+        },
+        {
+          "at": "negative forty-two point",
+          "text": "–$42.4 billion",
+          "label": "free cash flow, 12 months to Sept 2026"
+        },
+        {
+          "at": "positive fourteen point",
+          "text": "+$14.8 billion",
+          "label": "a year earlier"
+        }
+      ]
+    },
+    {
+      "narration": "That's the bet. Amazon is pouring the profits from ads and cloud into even more data centers, betting that AI demand keeps growing. Its CEO says he expects AWS growth above forty percent in both twenty twenty-seven and twenty twenty-eight. If he's right, the cloud landlord gets even bigger. If AI spending cools, Amazon is left holding some of the most expensive buildings on Earth. Either way, the store you shop in is only the front door. The real question is how long the rooms behind it can keep paying for the next expansion.",
+      "visuals": [
+        "data center corridor",
+        "warehouse at night",
+        "server room racks"
+      ],
+      "images": [
+        "commons:Amazon Web Services data center"
+      ],
+      "callouts": [
+        {
+          "at": "above forty percent",
+          "text": ">40%",
+          "label": "AWS growth target, 2027–28"
+        }
+      ]
+    },
+    {
+      "chapter": "Your turn",
+      "narration": "So next time you click buy, remember who's really paying. Often it's the seller, through fees and ads, and the profit flows to a cloud business you never see. Now I'm curious: do you ever click on sponsored results, or do you scroll straight past them? Tell me in the comments. And next time, we're looking at why airlines can make more from their credit cards than from flying you anywhere.",
+      "visuals": [
+        "online shopping laptop",
+        "smartphone scrolling shopping",
+        "airplane cabin passengers"
+      ],
+      "images": [
+        "commons:Amazon delivery van"
+      ]
+    }
+  ],
+  "fallback_images": [
+    "commons:Amazon fulfillment center",
+    "commons:Amazon fulfillment center interior",
+    "commons:Amazon delivery van",
+    "commons:Amazon warehouse",
+    "commons:Amazon Web Services data center",
+    "commons:Amazon Spheres",
+    "commons:Amazon Echo",
+    "commons:Amazon Kiva robots",
+    "commons:Amazon Prime Air",
+    "commons:Amazon delivery truck"
+  ],
+  "sources": [
+    "Amazon.com, Inc. Form 10-K for fiscal year 2025 (filed Feb 2026): segment results, net sales by product group, fulfillment expense, employees",
+    "Amazon.com Announces Fourth Quarter Results, Feb 5, 2026 (Business Wire / ir.aboutamazon.com)",
+    "Amazon.com Announces Third Quarter Results, Oct 29, 2026 (Business Wire / aboutamazon.com): Q3 2026 sales, operating income, segments, free cash flow, Q4 guidance, 2026 capex",
+    "PPC Land, 'Amazon ad revenue growth drops to 11% after Prime Day moves to June', Oct 29, 2026",
+    "Marketing Dive, 'Amazon annual ad revenue passes $68B', Feb 6, 2026"
+  ],
+  "shorts": [
+    {
+      "title": "Amazon's real profit doesn't come from the store",
+      "headline": "18% of sales. 57% of profit.",
+      "narration": "Amazon's biggest profit machine isn't the store you shop in. In twenty twenty-five Amazon had seven hundred and seventeen billion dollars in sales. The cloud business, Amazon Web Services, was only about eighteen percent of that. But it delivered about fifty-seven percent of Amazon's operating profit. Forty-five point six billion dollars. That's more than the US store and the international store earned combined. Every time a company rents servers from Amazon, it's paying for the business that actually keeps Amazon profitable. The store is the famous part. The cloud is the money.",
+      "visuals": [
+        "server room racks",
+        "data center corridor",
+        "online shopping laptop"
+      ],
+      "images": [
+        "commons:Amazon Web Services data center",
+        "commons:Amazon fulfillment center",
+        "commons:Data center servers"
+      ],
+      "callouts": [
+        {
+          "at": "seven hundred and seventeen",
+          "text": "$716.9 billion",
+          "label": "net sales, 2025"
+        },
+        {
+          "at": "about eighteen percent",
+          "text": "18%",
+          "label": "AWS share of sales"
+        },
+        {
+          "at": "about fifty-seven percent",
+          "text": "57%",
+          "label": "AWS share of operating profit"
+        }
+      ],
+      "chart": {
+        "type": "bar",
+        "title": "Operating income, 2025",
+        "at": "Forty-five point six",
+        "labels": [
+          "North America",
+          "International",
+          "AWS"
+        ],
+        "values": [
+          29.6,
+          4.7,
+          45.6
+        ],
+        "prefix": "$",
+        "suffix": " billion",
+        "decimals": 1,
+        "highlight": "AWS",
+        "source": "Amazon 10-K, 2025"
+      }
+    },
+    {
+      "title": "Those 'sponsored' results earn Amazon $68 billion",
+      "headline": "The ads hiding in your search results",
+      "narration": "Search for anything on Amazon and look at the word sponsored. Those listings are ads, and they've become one of Amazon's biggest businesses. Sellers bid for the top spots and pay Amazon when you click. In twenty twenty-five, Amazon's ad revenue hit sixty-eight point six billion dollars. That's more than Amazon makes from all its subscriptions, Prime included, at forty-nine point six billion. And an ad needs no warehouse, no truck and no driver. Amazon is selling the top of the shelf.",
+      "visuals": [
+        "smartphone scrolling shopping",
+        "laptop online shopping search"
+      ],
+      "images": [
+        "commons:Amazon fulfillment center",
+        "commons:Amazon Prime Video",
+        "commons:Amazon delivery van"
+      ],
+      "callouts": [
+        {
+          "at": "forty-nine point six billion",
+          "text": "$49.6 billion",
+          "label": "subscription services, 2025"
+        }
+      ],
+      "chart": {
+        "type": "bar",
+        "title": "Amazon ad revenue",
+        "at": "sixty-eight point six",
+        "labels": [
+          "2023",
+          "2024",
+          "2025"
+        ],
+        "values": [
+          46.9,
+          56.2,
+          68.6
+        ],
+        "prefix": "$",
+        "suffix": " billion",
+        "decimals": 1,
+        "highlight": "2025",
+        "source": "Amazon 10-K, 2025"
+      }
+    },
+    {
+      "title": "Amazon makes $172 billion from other people's products",
+      "headline": "Amazon profits from stuff it doesn't sell",
+      "narration": "A lot of what you buy on Amazon isn't sold by Amazon. It's sold by independent sellers, and they pay Amazon at almost every step. A commission on each sale. Fees to store their stock in Amazon's warehouses. Fees to pack it and ship it. In twenty twenty-five those seller services brought in one hundred and seventy-two billion dollars. Amazon's own online store sales were two hundred and sixty-nine billion. Amazon doesn't need to own the product. It owns the street, the shop window and the delivery van.",
+      "visuals": [
+        "warehouse worker packing boxes",
+        "warehouse shelves inventory",
+        "delivery van street"
+      ],
+      "images": [
+        "commons:Amazon fulfillment center interior",
+        "commons:Amazon warehouse",
+        "commons:Amazon delivery van"
+      ],
+      "callouts": [
+        {
+          "at": "one hundred and seventy-two",
+          "text": "$172.2 billion",
+          "label": "third-party seller services, 2025"
+        },
+        {
+          "at": "two hundred and sixty-nine",
+          "text": "$269.3 billion",
+          "label": "Amazon's own online sales, 2025"
+        }
+      ]
+    }
+  ]
+}
