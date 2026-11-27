@@ -1,32 +1,18 @@
 {
-  "taken": "2026-11-26T17:12:34.046247+00:00",
+  "taken": "2026-11-27T16:43:18.743330+00:00",
   "channel": {
-    "viewCount": "80",
+    "viewCount": "1171",
     "subscriberCount": "1",
     "hiddenSubscriberCount": false,
-    "videoCount": "3"
+    "videoCount": "4"
   },
   "analytics_status": "no_data_yet",
   "videos": [
     {
-      "id": "a_d5UtHcAhY",
-      "title": "Why Costco's $1.50 hot dog never gets more expensive #Shorts",
-      "published": "2026-11-26T15:00:18Z",
-      "privacy": "public",
-      "duration": "PT33S",
-      "viewCount": 490,
-      "likeCount": 3,
-      "dislikeCount": 0,
-      "favoriteCount": 0,
-      "commentCount": 0,
-      "is_short": true,
-      "views_per_day": 490.0
-    },
-    {
       "id": "P5GffN7bLus",
       "title": "84 million people pay Costco before buying anything #Shorts",
-      "published": "2026-11-25T15:02:05Z",
-      "privacy": "private",
+      "published": "2026-11-27T15:00:13Z",
+      "privacy": "public",
       "duration": "PT32S",
       "viewCount": 0,
       "likeCount": 0,
@@ -37,18 +23,32 @@
       "views_per_day": 0.0
     },
     {
+      "id": "a_d5UtHcAhY",
+      "title": "Why Costco's $1.50 hot dog never gets more expensive #Shorts",
+      "published": "2026-11-26T15:00:18Z",
+      "privacy": "public",
+      "duration": "PT33S",
+      "viewCount": 1048,
+      "likeCount": 5,
+      "dislikeCount": 0,
+      "favoriteCount": 0,
+      "commentCount": 0,
+      "is_short": true,
+      "views_per_day": 978.0
+    },
+    {
       "id": "1rxAWSK_xIU",
       "title": "Costco barely profits from the stuff it sells #Shorts",
       "published": "2026-11-25T14:58:53Z",
       "privacy": "public",
       "duration": "PT38S",
-      "viewCount": 76,
+      "viewCount": 108,
       "likeCount": 1,
       "dislikeCount": 0,
       "favoriteCount": 0,
       "commentCount": 0,
       "is_short": true,
-      "views_per_day": 69.5
+      "views_per_day": 52.1
     },
     {
       "id": "RO0t7iF2Epg",
@@ -56,13 +56,13 @@
       "published": "2026-11-25T13:44:52Z",
       "privacy": "public",
       "duration": "PT8M25S",
-      "viewCount": 13,
+      "viewCount": 18,
       "likeCount": 2,
       "dislikeCount": 0,
       "favoriteCount": 0,
       "commentCount": 1,
       "is_short": false,
-      "views_per_day": 11.4
+      "views_per_day": 8.5
     }
   ]
 }
