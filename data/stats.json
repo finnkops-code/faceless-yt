@@ -1,12 +1,12 @@
 {
-  "taken": "2026-11-27T16:43:18.743330+00:00",
+  "taken": "2026-11-28T15:35:30.543255+00:00",
   "channel": {
-    "viewCount": "1171",
+    "viewCount": "1201",
     "subscriberCount": "1",
     "hiddenSubscriberCount": false,
     "videoCount": "4"
   },
-  "analytics_status": "no_data_yet",
+  "analytics_status": "ok",
   "videos": [
     {
       "id": "P5GffN7bLus",
@@ -14,13 +14,13 @@
       "published": "2026-11-27T15:00:13Z",
       "privacy": "public",
       "duration": "PT32S",
-      "viewCount": 0,
-      "likeCount": 0,
+      "viewCount": 39,
+      "likeCount": 1,
       "dislikeCount": 0,
       "favoriteCount": 0,
       "commentCount": 0,
       "is_short": true,
-      "views_per_day": 0.0
+      "views_per_day": 38.1
     },
     {
       "id": "a_d5UtHcAhY",
@@ -28,13 +28,13 @@
       "published": "2026-11-26T15:00:18Z",
       "privacy": "public",
       "duration": "PT33S",
-      "viewCount": 1048,
-      "likeCount": 5,
+      "viewCount": 1286,
+      "likeCount": 6,
       "dislikeCount": 0,
       "favoriteCount": 0,
       "commentCount": 0,
       "is_short": true,
-      "views_per_day": 978.0
+      "views_per_day": 635.2
     },
     {
       "id": "1rxAWSK_xIU",
@@ -42,13 +42,22 @@
       "published": "2026-11-25T14:58:53Z",
       "privacy": "public",
       "duration": "PT38S",
-      "viewCount": 108,
+      "viewCount": 110,
       "likeCount": 1,
       "dislikeCount": 0,
       "favoriteCount": 0,
       "commentCount": 0,
+      "views": 72,
+      "estimatedMinutesWatched": 13,
+      "averageViewDuration": 19,
+      "averageViewPercentage": 52.129999999999995,
+      "subscribersGained": 0,
+      "subscribersLost": 0,
+      "likes": 1,
+      "shares": 0,
       "is_short": true,
-      "views_per_day": 52.1
+      "views_per_day": 36.4,
+      "subs_per_1k_views": 0.0
     },
     {
       "id": "RO0t7iF2Epg",
@@ -56,13 +65,22 @@
       "published": "2026-11-25T13:44:52Z",
       "privacy": "public",
       "duration": "PT8M25S",
-      "viewCount": 18,
+      "viewCount": 20,
       "likeCount": 2,
       "dislikeCount": 0,
       "favoriteCount": 0,
       "commentCount": 1,
+      "views": 8,
+      "estimatedMinutesWatched": 15,
+      "averageViewDuration": 116,
+      "averageViewPercentage": 23.09,
+      "subscribersGained": 0,
+      "subscribersLost": 0,
+      "likes": 1,
+      "shares": 0,
       "is_short": false,
-      "views_per_day": 8.5
+      "views_per_day": 6.5,
+      "subs_per_1k_views": 0.0
     }
   ]
 }
